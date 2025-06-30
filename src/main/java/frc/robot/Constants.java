@@ -16,4 +16,19 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+  public static class MyFirstSubsystem {
+
+    public static final int MotorID = 7;
+    public static final boolean MotorInverted = true;
+    
+  }
+  public static final class DriverConstants {
+
+    public static final int DriverControllerPort = 0;
+    public static final int OperatorControllerPort = 1;
+
+    public static final double DriverDeadband = 0.1;
+  }
+
+
 }
