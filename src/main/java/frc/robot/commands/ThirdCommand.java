@@ -10,7 +10,7 @@ public class ThirdCommand extends Command {
 
     public static final double maxPower = 0.5;
     public static final double tolerance = 1;
-    public static final double kp = 0.05;
+    public static final double kp = 0.005;
 
 
     public ThirdCommand(FirstSubsystem subsystem) {

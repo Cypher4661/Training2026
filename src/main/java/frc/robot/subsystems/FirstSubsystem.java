@@ -11,6 +11,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -53,7 +54,8 @@ public class FirstSubsystem extends SubsystemBase {
     }
 
     public void setPower(double power) {
-        motor.set(power);
+        motor.set(MathUtil.clamp(power, -MaxDuty, MaxDuty));
+        SmartDashboard.putNumber("Motor Power", power);
     }
 
     /**

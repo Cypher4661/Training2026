@@ -21,6 +21,7 @@ public static final class FirstSubsystem {
 
   public static final double RampRate = 0.3;
   public static final double MaxVolt = 8;
+  public static final double MaxDuty = MaxVolt / 12;
   public static final int MaxAmper = 20;
 }
   public static class OperatorConstants {
