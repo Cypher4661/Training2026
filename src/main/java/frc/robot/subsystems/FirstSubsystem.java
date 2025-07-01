@@ -21,6 +21,15 @@ public class FirstSubsystem extends SubsystemBase {
         motor.set(power);
     }
 
+    /**
+     * 
+     * @return mechanism position in degrees
+     */
+    public double getPosition() {
+        return motor.getEncoder().getPosition() * 360 / Constants.FirstSubsystem.GearRatio;
+    }
+
+
     public void stop() {
         setPower(0);
     }

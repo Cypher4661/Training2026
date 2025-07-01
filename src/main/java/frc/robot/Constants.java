@@ -17,6 +17,7 @@ public final class Constants {
 public static final class FirstSubsystem {
   public static final int MotorId = 11;
   public static final boolean Inverted = false;
+  public static final double GearRatio = 9;
 }
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
