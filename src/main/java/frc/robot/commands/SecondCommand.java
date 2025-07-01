@@ -7,7 +7,6 @@ import frc.robot.subsystems.FirstSubsystem;
 public class SecondCommand extends Command {
     FirstSubsystem subsystem;
     double angle;
-    double duration;
     double targetAngle;
 
     public static final double maxPower = 0.5;
