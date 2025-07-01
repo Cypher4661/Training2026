@@ -4,10 +4,14 @@
 
 package frc.robot;
 
+import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.FirstCommand;
+import frc.robot.commands.GoToAngle;
 import frc.robot.commands.SecondCommand;
 import frc.robot.subsystems.FirstSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -19,14 +23,16 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
 
+private final CommandXboxController driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
+
   private FirstSubsystem firstSubsystem  = new FirstSubsystem();
   private Command auto1 = new FirstCommand(firstSubsystem, 0.7, 10);
   private Command auto2 = new SecondCommand(firstSubsystem, 90);
   private int useAutoCommandNumber = 2;
+
   // The robot's subsystems and commands are defined here...
   
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  // private final CommandXboxController driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -44,12 +50,12 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    //  new Trigger(m_exampleSubsystem::exampleCondition).onTrue(new ExampleCommand(m_exampleSubsystem));
-
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    driverController.b().onTrue(
+      new GoToAngle(firstSubsystem, 90)
+        .andThen(new WaitCommand(5).raceWith(new WaitUntilCommand(()->driverController.a().getAsBoolean())))
+        .andThen(new GoToAngle(firstSubsystem, 135))
+        .andThen(new WaitCommand(5).raceWith(new WaitUntilCommand(()->driverController.a().getAsBoolean())))
+        .andThen(new GoToAngle(firstSubsystem, 0)));
   }
 
   /**
