@@ -1,5 +1,9 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -8,15 +12,19 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import static edu.wpi.first.units.Units.Degrees;
 import static frc.robot.Constants.FirstSubsystem.*;
 
 public class FirstSubsystem extends SubsystemBase {
 
     private SparkMax motor;
+    private TalonFX talonMotor;
 
     public FirstSubsystem() {
         super();
         configureMotor();
+        configureTalonMotor();
     }
 
     private void configureMotor() {
@@ -30,6 +38,15 @@ public class FirstSubsystem extends SubsystemBase {
         motor.configure(config,ResetMode.kResetSafeParameters , PersistMode.kNoPersistParameters);
     }
 
+    private void configureTalonMotor() {
+        talonMotor = new TalonFX(MotorId, "rio");
+        TalonFXConfiguration configuration = new TalonFXConfiguration();
+        configuration.CurrentLimits.SupplyCurrentLimit = MaxAmper;
+        configuration.CurrentLimits.withStatorCurrentLimit(MaxAmper).withSupplyCurrentLimitEnable(true);
+        configuration.MotorOutput.withInverted(Inverted ? InvertedValue.CounterClockwise_Positive : InvertedValue.Clockwise_Positive).withNeutralMode(NeutralModeValue.Brake).withPeakForwardDutyCycle(MaxVolt/12).withPeakReverseDutyCycle(-MaxVolt/12);
+        talonMotor.getConfigurator().apply(configuration);
+    }
+
     public void setPower(double power) {
         motor.set(power);
     }
@@ -39,12 +56,18 @@ public class FirstSubsystem extends SubsystemBase {
      * @return mechanism position in degrees
      */
     public double getPosition() {
-        return motor.getEncoder().getPosition() * 360 / GearRatio;
+        return motor.getEncoder().getPosition() / GearRatio * 360;
+//        return Angle.ofBaseUnits(motor.getEncoder().getPosition(), Rotations).in(Degrees) / GearRatio;
+    }
+
+    public double getTalonPosition() {
+        return talonMotor.getPosition().getValue().in(Degrees) / GearRatio;
     }
 
 
     public void stop() {
         setPower(0);
     }
+
 
 }

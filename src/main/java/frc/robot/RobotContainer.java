@@ -22,6 +22,7 @@ public class RobotContainer {
   private FirstSubsystem firstSubsystem  = new FirstSubsystem();
   private Command auto1 = new FirstCommand(firstSubsystem, 0.7, 10);
   private Command auto2 = new SecondCommand(firstSubsystem, 90);
+  private int useAutoCommandNumber = 2;
   // The robot's subsystems and commands are defined here...
   
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -57,7 +58,14 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return auto2;
+    switch(useAutoCommandNumber) {
+      case 1:
+        return auto1;
+      case 2:
+        return auto2;
+      default:
+        return null;
+    }
+
   }
 }
