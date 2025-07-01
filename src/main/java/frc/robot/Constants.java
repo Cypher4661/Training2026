@@ -18,6 +18,10 @@ public static final class FirstSubsystem {
   public static final int MotorId = 11;
   public static final boolean Inverted = false;
   public static final double GearRatio = 9;
+
+  public static final double RampRate = 0.3;
+  public static final double MaxVolt = 8;
+  public static final int MaxAmper = 20;
 }
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
