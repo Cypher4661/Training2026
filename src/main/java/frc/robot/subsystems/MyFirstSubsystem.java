@@ -5,17 +5,18 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class MyFirstSubsystem extends SubsystemBase {
   /** Creates a new MyFirstSubsystem. */
-  private final TalonFX motor;
+  private final SparkMax  motor;
 // Constructor
   public MyFirstSubsystem () {
     super();
-    motor = new TalonFX(Constants.MyFirstSubsystem.MotorID);
+    motor = new SparkMax(Constants.MyFirstSubsystem.MotorID, MotorType.kBrushless);
     motor.setInverted(Constants.MyFirstSubsystem.MotorInverted);
   }
   // Simple power -1 to 1

@@ -19,7 +19,7 @@ public final class Constants {
   public static class MyFirstSubsystem {
 
     public static final int MotorID = 11 ;
-    public static final boolean MotorInverted = true;
+    public static final boolean MotorInverted = false;
     
   }
   public static final class DriverConstants {
