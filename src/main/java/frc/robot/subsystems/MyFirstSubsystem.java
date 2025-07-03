@@ -8,8 +8,11 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.commands.GoToommand;
 
 public class MyFirstSubsystem extends SubsystemBase {
   /** Creates a new MyFirstSubsystem. */
@@ -29,5 +32,16 @@ public class MyFirstSubsystem extends SubsystemBase {
     setPower(0);
   }
 
+  public double getPosition() {
+    return motor.getEncoder().getPosition() * Constants.MyFirstSubsystem.MotorPositionRatio;
+  }
+
+  @Override
+  public void periodic() {
+    SmartDashboard.putNumber("Motor Position", getPosition());
+    SmartDashboard.putNumber("Motor Power", motor.getAppliedOutput());
+  }
+
+  
 
 }

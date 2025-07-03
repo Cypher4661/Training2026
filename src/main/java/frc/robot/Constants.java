@@ -4,6 +4,10 @@
 
 package frc.robot;
 
+import com.fasterxml.jackson.databind.jsontype.impl.StdTypeResolverBuilder;
+
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -16,10 +20,11 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
-  public static class MyFirstSubsystem {
+  public static class MyFirstSubsystem extends SubsystemBase{
 
     public static final int MotorID = 11 ;
     public static final boolean MotorInverted = false;
+    public static final double MotorPositionRatio = 40.0; // Ratio to convert encoder ticks to desired units (e.g., degrees, meters)
     
   }
   public static final class DriverConstants {

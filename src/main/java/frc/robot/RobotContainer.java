@@ -7,9 +7,13 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.GoToommand;
 import frc.robot.commands.MyFirstSubsystemCommand;
 import frc.robot.subsystems.MyFirstSubsystem; // Correct import for MyFirstSubsystem
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -54,6 +58,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return autoCommand;
+    return new GoToommand(90.0, subsystem).andThen(new WaitCommand(5).raceWith(WaitUntilCommand(()->
   }
+
 }
