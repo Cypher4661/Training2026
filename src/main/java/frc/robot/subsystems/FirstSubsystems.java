@@ -12,7 +12,7 @@ public class FirstSubsystems extends SubsystemBase{
 
     public FirstSubsystems(){
         super();
-        motor = new SparkMax(Constants.FirstSubsystemsConstants.MotorId, MotorType.kBrushed)
+        motor = new SparkMax(Constants.FirstSubsystemsConstants.MotorId, MotorType.kBrushless);
         motor.setInverted(Constants.FirstSubsystemsConstants.MotorInverted);
     }
     public void setPower(double power){
