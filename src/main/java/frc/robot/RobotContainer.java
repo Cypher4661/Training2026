@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.commands.firstConstractor;
+import frc.robot.subsystems.firstSubSystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -16,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+  firstSubSystem fsub = new firstSubSystem();
   // The robot's subsystems and commands are defined here...
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -49,6 +51,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new firstConstractor(0.2, 12.4, new frc.robot.subsystems.firstSubSystem());
+    return new firstConstractor(0.2, 12.4, fsub);
   }
 }
