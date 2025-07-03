@@ -20,13 +20,15 @@ public class goToPosition extends Command{
 
     @Override
     public void execute() {
-        if(position>){
+        if(position > subsystem.getPosition()){
             subsystem.setPower(-0.5);
         }
-        else{
+        else if (position < subsystem.getPosition()) {
             subsystem.setPower(0.5);
         }
-        
+        else{
+            subsystem.setPower(0.0);
+        }
     }
 
     @Override
@@ -39,7 +41,6 @@ public class goToPosition extends Command{
 
     @Override
     public void end(boolean interrupted) {
-        // TODO Auto-generated method stub
         subsystem.stop();
     }
 
