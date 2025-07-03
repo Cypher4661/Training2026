@@ -78,6 +78,7 @@ public class FirstSubsystem extends SubsystemBase {
 
     @Override
     public void initSendable(SendableBuilder builder) {
+        super.initSendable(builder);
         builder.addDoubleProperty("Position", this::getPosition, null);
     }
 
