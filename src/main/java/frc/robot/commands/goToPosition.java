@@ -7,9 +7,10 @@ import frc.robot.subsystems.FirstSubsystems;
 
 public class goToPosition extends Command{
 
-   FirstSubsystems subsystem;
-   double target;
-   double position;
+   private FirstSubsystems subsystem;
+   private double target;
+   private double position;
+   
 
    public goToPosition(double target, FirstSubsystems subsystem) {
     this.target = target;
