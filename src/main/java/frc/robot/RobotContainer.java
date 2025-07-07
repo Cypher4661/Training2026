@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.commands.firstConstractor;
+import frc.robot.commands.goToAngle;
 import frc.robot.subsystems.firstSubSystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -51,6 +52,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new firstConstractor(0.2, 12.4, fsub);
+    return new goToAngle(fsub);
   }
 }
