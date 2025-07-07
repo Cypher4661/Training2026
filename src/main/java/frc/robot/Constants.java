@@ -14,7 +14,7 @@ package frc.robot;
  */
 public final class Constants {
     public static final double GearRatio = 3;
-    public static final int MotorID = 0;
+    public static final int MotorID = 11;
     public static final boolean MotorInverted = false;
   
 }

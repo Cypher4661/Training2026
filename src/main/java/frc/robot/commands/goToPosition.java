@@ -7,7 +7,7 @@ public class goToPosition extends Command {
     private double target;
     private MotorSubsystem subsystem;
 
-    private final double tolerance =5;
+    private final double tolerance =10;
     public goToPosition(double target, MotorSubsystem subsystem) {
         this.target = target;
         this.subsystem = subsystem;
@@ -24,9 +24,9 @@ public class goToPosition extends Command {
         double current = subsystem.GetAngle();
         double error = target - current;
         if(error > 0) {
-            subsystem.setPower(0.2);
+            subsystem.setPower(0.015);
         } else {
-            subsystem.setPower(-0.2);
+            subsystem.setPower(-0.015);
         }
     }
 
