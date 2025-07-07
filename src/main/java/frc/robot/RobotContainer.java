@@ -24,11 +24,11 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private shiraSubSystem shira = new shiraSubSystem();
-  private Command ninety = new goToCommand(shira, 0.01, 90);
+  private Command ninety = new goToCommand(shira, 0.02, 90);
   private Command cmd = new shiraCommand(shira, 0.3, 4);
-  private Command fF = new goToCommand(shira, 0.01, 45);
+  private Command fF = new goToCommand(shira, 0.02, 45);
   private Command wate = new WaitCommand(5);
-  private Command goBack = new goToCommand(shira, -0.01, -135);
+  private Command goBack = new goToCommand(shira, -0.02, -135);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -46,6 +46,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return ninety.andThen(wate.andThen(fF.andThen(wate.andThen(goBack))));
+    return ninety.andThen(new WaitCommand(1)).andThen(fF).andThen(new WaitCommand(1)).andThen(goBack);
   }
 }

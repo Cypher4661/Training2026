@@ -47,7 +47,8 @@ public class goToCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return subsystem.getPosition() >= startAngle + angle;
+    return (power > 0 && subsystem.getPosition() >= startAngle + angle) ||
+           (power < 0 && subsystem.getPosition() <= startAngle + angle);
   }
 
   
