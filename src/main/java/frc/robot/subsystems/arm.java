@@ -7,6 +7,7 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.commands.degreesKing;
 
 public class arm extends SubsystemBase {
 
@@ -16,7 +17,9 @@ public class arm extends SubsystemBase {
     public arm() {
         motor = new SparkMax(Constants.armConstants.MotorID, MotorType.kBrushless);
         motor.setInverted(Constants.armConstants.MotorInverted);
-        SmartDashboard.putData(this);
+        SmartDashboard.putData("Arm",this);
+        SmartDashboard.putData("cmd90", new degreesKing(90, this));
+        SmartDashboard.putData("cmd180", new degreesKing(180, this));
     }
 
     public double getPosition() {

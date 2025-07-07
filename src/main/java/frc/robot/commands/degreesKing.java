@@ -18,7 +18,6 @@ public class degreesKing extends Command {
   public degreesKing(double targetAngel, arm arm) { 
     this.targetAngel=targetAngel;
     this.arm=arm;
-    this.angle=arm.getPosition();
     addRequirements(arm);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -32,6 +31,7 @@ public class degreesKing extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    angle=arm.getPosition();
     if (angle<targetAngel){
     arm.setPower(0.05);
     }

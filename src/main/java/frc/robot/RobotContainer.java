@@ -29,7 +29,7 @@ public class RobotContainer {
   }
 private void configureBindings(){}
 private void configureDefaultCommands(){
-  arm.setDefaultCommand(new armcommand(arm, 0, 0));
+//  arm.setDefaultCommand(new armcommand(arm, 0, 0));
 }
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
