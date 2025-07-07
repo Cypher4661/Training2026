@@ -35,8 +35,8 @@ public class MotorCommand extends Command {
   }
 
   @Override
- public boolean isFinished() {
-  return Timer.getFPGATimestamp() >= startTime + duration;
+  public boolean isFinished() {
+    return Timer.getFPGATimestamp() >= startTime + duration;
  }
   // Called once the command ends or is interrupted.
   @Override
@@ -44,5 +44,5 @@ public class MotorCommand extends Command {
     subsystem.stop();
     System.out.println("Command ended at: " + Timer.getFPGATimestamp());
 
-  }
+  } 
 }
