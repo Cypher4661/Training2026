@@ -16,7 +16,7 @@ public final class Constants {
   public static final class FirstSubsystemsConstants{
     public static final int MotorId = 11;
     public static final boolean MotorInverted = false;
-    public static final double GearRatio = 9;
+    public static final double GearRatio = 3;
     
   }
   public static class OperatorConstants {

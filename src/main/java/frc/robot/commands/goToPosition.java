@@ -20,22 +20,19 @@ public class goToPosition extends Command{
 
     @Override
     public void execute() {
-        if(target > subsystem.getPosition()){
-            subsystem.setPower(0.3);
+        if(target > position){
+            subsystem.setPower(0.05);
         }
-        else if (target < subsystem.getPosition()) {
-            subsystem.setPower(-0.3);
-        }
-        else{
-            subsystem.setPower(0.0);
+        else if (target < position) {
+          subsystem.setPower(-0.05);
         }
     }
 
     @Override
     public boolean isFinished() {
 
-        double error = subsystem.getPosition()-target;
-        return Math.abs(error) < 5;
+        double error = position-target;
+        return Math.abs(error) < 10;
         
     }
 
