@@ -24,7 +24,7 @@ public final class Constants {
 
     public static final int MotorID = 11 ;
     public static final boolean MotorInverted = false;
-    public static final double MotorPositionRatio = 40.0; // Ratio to convert encoder ticks to desired units (e.g., degrees, meters)
+    public static final double MotorPositionRatio = 1/3; // Ratio to convert encoder ticks to desired units (e.g., degrees, meters)
     
   }
   public static final class DriverConstants {

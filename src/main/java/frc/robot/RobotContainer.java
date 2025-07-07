@@ -7,7 +7,7 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.GoToommand;
+import frc.robot.commands.GoToCommand;
 import frc.robot.commands.MyFirstSubsystemCommand;
 import frc.robot.subsystems.MyFirstSubsystem; // Correct import for MyFirstSubsystem
 import edu.wpi.first.wpilibj2.command.Command;
@@ -58,7 +58,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new GoToommand(90.0, subsystem).andThen(new WaitCommand(5).raceWith(WaitUntilCommand(()->
+    return new GoToCommand(90.0, subsystem).andThen(new WaitCommand(5)).andThen(new GoToCommand(180.0, subsystem)).andThen(new WaitCommand(5)).andThen(new GoToCommand(0.0, subsystem));
   }
-
 }

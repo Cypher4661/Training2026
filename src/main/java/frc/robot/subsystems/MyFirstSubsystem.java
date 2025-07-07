@@ -10,9 +10,10 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.commands.GoToommand;
+import frc.robot.commands.GoToCommand;
 
 public class MyFirstSubsystem extends SubsystemBase {
   /** Creates a new MyFirstSubsystem. */
@@ -22,6 +23,8 @@ public class MyFirstSubsystem extends SubsystemBase {
     super();
     motor = new SparkMax(Constants.MyFirstSubsystem.MotorID, MotorType.kBrushless);
     motor.setInverted(Constants.MyFirstSubsystem.MotorInverted);
+    SmartDashboard.putData("cmd90", new GoToCommand(90, this));
+    SmartDashboard.putData("cmd180", new GoToCommand(180, this));
   }
   // Simple power -1 to 1
   public void setPower(double power) {
