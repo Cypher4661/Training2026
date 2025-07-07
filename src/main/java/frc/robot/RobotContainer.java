@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private shiraSubSystem shira = new shiraSubSystem();
-  private Command ninety = new goToCommand(shira, 0.5, 90);
+  private Command ninety = new goToCommand(shira, 0.03, 90);
   private Command cmd = new shiraCommand(shira, 0.3, 4);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */

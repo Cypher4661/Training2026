@@ -16,8 +16,9 @@ public class shiraSubSystem extends SubsystemBase{
     public void setPower(double power){
         motor.set(power);
     }
+    
     public double getPosition(){
-        return motor.getEncoder().getPosition() * Constants.shiraConstants.ratio;
+        return motor.getEncoder().getPosition() / Constants.shiraConstants.ratio * 360;
     }
 
     @Override

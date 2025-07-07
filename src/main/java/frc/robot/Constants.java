@@ -15,6 +15,6 @@ package frc.robot;
 public final class Constants {
   public static class shiraConstants{
     public static final int motorID = 11;
-    public static final double ratio = 40;
+    public static final double ratio = 3;
   }
 }
