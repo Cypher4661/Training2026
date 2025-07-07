@@ -29,18 +29,17 @@ public class goToAngle extends Command {
   public void execute() {
     double wantedAngle = SmartDashboard.getNumber("wantedAngle", 90);
     if (subSystem.getPos() < wantedAngle) {
-      subSystem.setPower(0.1);
+      subSystem.setPower(0.05);
     }
     else if(wantedAngle < subSystem.getPos())
       subSystem.setPower(-0.05);
-    else{
-      subSystem.stop();
-    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    subSystem.stop();
+  }
 
   // Returns true when the command should end.
   @Override

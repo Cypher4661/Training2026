@@ -29,7 +29,7 @@ public class firstSubSystem extends SubsystemBase {
   }
 
   public double getPos(){
-    return motor.getEncoder().getPosition()/9;
+    return motor.getEncoder().getPosition() / Constants.firstSubSystem.GearRatio * 360;
   }
 
   @Override

@@ -17,5 +17,6 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
     public static final int MotorID = 11;
     public static final boolean MotorInverted = false;
+    public static final double GearRatio = 3;
     }
 }
