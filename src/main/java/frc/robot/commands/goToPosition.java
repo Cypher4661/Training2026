@@ -20,11 +20,11 @@ public class goToPosition extends Command{
 
     @Override
     public void execute() {
-        if(position > subsystem.getPosition()){
-            subsystem.setPower(-0.5);
-        }
-        else if (position < subsystem.getPosition()) {
+        if(target > subsystem.getPosition()){
             subsystem.setPower(0.5);
+        }
+        else if (target < subsystem.getPosition()) {
+            subsystem.setPower(-0.5);
         }
         else{
             subsystem.setPower(0.0);
