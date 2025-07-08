@@ -13,6 +13,7 @@ import frc.robot.Constants;
 
 public class MyFirstSubsystem extends SubsystemBase {
   /** Creates a new MyFirstSubsystem. */
+  
   private final SparkMax  motor;
 // Constructor
   public MyFirstSubsystem () {
