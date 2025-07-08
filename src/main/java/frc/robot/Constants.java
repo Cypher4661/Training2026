@@ -20,6 +20,7 @@ public final class Constants {
 
     public static final int MotorID = 11 ;
     public static final boolean MotorInverted = false;
+    public static final double GearRatio = 1.0/3.0; // Example gear ratio, adjust as needed
     
   }
   public static final class DriverConstants {

@@ -8,9 +8,12 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
+
+import com.revrobotics.RelativeEncoder;
 public class MyFirstSubsystem extends SubsystemBase {
   /** Creates a new MyFirstSubsystem. */
   
@@ -20,6 +23,8 @@ public class MyFirstSubsystem extends SubsystemBase {
     super();
     motor = new SparkMax(Constants.MyFirstSubsystem.MotorID, MotorType.kBrushless);
     motor.setInverted(Constants.MyFirstSubsystem.MotorInverted);
+    
+ 
   }
   // Simple power -1 to 1
   public void setPower(double power) {
@@ -29,6 +34,15 @@ public class MyFirstSubsystem extends SubsystemBase {
   public void stop() {
     setPower(0);
   }
+    // Reset encoder to 0
+  public double getPosition() {
+    return motor.getEncoder().getPosition() / Constants.MyFirstSubsystem.GearRatio * 360;
+ }
+  @Override
+  public void periodic() {
+      SmartDashboard.putNumber("Angle", getPosition());
+  }
+
 
 
 }

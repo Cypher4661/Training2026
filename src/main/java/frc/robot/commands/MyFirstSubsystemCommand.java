@@ -12,18 +12,31 @@ import frc.robot.subsystems.MyFirstSubsystem;
 public class MyFirstSubsystemCommand extends Command {
   private final MyFirstSubsystem subsystem;
   private final double power; private final double duration; private double startTime;
-
+  private double calculatedDuration;
+  private final double durationFor360Degrees = 0.26;
+  private final double degrees;
   
-  public MyFirstSubsystemCommand (MyFirstSubsystem subsystem, double power, double duration) {
+  public MyFirstSubsystemCommand (MyFirstSubsystem subsystem, double power, double duration, double degrees) {
     this.subsystem = subsystem;
     this.power = power;
     this.duration = duration;
+    this.degrees = degrees;
     addRequirements(subsystem);
   }
   
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    if (degrees > 0) {
+      calculatedDuration = (degrees / 360.0) * durationFor360Degrees; // חישוב זמן לפי זוויות
+      System.out.println("Command initialized for " + degrees + " degrees.");
+    } else if (duration > 0) {
+      calculatedDuration = duration; // שימוש בזמן ידני
+      System.out.println("Command initialized for " + duration + " seconds.");
+    } else {
+      System.out.println("Error: Neither degrees nor duration specified!");
+      calculatedDuration = 0; // לא לעשות כלום אם אין ערכים
+    }
     startTime = Timer.getFPGATimestamp();
     System.out.println("Command started at: " + startTime + " seconds for "+ duration + " seconds with power: " + power);
   }
@@ -35,7 +48,7 @@ public class MyFirstSubsystemCommand extends Command {
   }
   @Override
   public boolean isFinished() {
-    return Timer.getFPGATimestamp() >= startTime + duration;
+    return Timer.getFPGATimestamp() >= startTime + calculatedDuration;
   }
   // Called once the command ends or is interrupted.
   @Override
