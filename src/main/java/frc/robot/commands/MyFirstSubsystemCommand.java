@@ -13,6 +13,7 @@ public class MyFirstSubsystemCommand extends Command {
   private final MyFirstSubsystem subsystem;
   private final double power; private final double duration; private double startTime;
 
+  
   public MyFirstSubsystemCommand (MyFirstSubsystem subsystem, double power, double duration) {
     this.subsystem = subsystem;
     this.power = power;
