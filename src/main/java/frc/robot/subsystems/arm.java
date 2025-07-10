@@ -8,17 +8,27 @@ package frc.robot.subsystems;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
+import frc.robot.commands.GoToAngle;
 
-public class arm extends SubsystemBase {
+public class Arm extends SubsystemBase {
    private final SparkMax motor;
   /** Creates a new arm. */
-  public arm() { 
+  public Arm() { 
     super();
-   motor = new SparkMax(Constants.armConstants.MotorID, MotorType.kBrushless);
+    motor = new SparkMax(Constants.armConstants.MotorID, MotorType.kBrushless);
     motor.setInverted(Constants.armConstants.MotorInvereted);
+    SmartDashboard.putData("arm",this);
    }
+public Command getCommand(){
+  return new GoToAngle(this, 90).andThen(new WaitCommand(5),new GoToAngle(this, 135), new WaitCommand(2),new GoToAngle(this, 0));
+
+}   
 public void setPower(double power){
   motor.set(power);
 }
@@ -27,6 +37,12 @@ public void stop(){
 }
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("Position", getPosition());
+    
+    
     // This method will be called once per scheduler run
+  }
+  public double getPosition(){
+    return motor.getEncoder().getPosition()/Constants.armConstants.GearRatio*360;
   }
 }

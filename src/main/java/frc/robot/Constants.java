@@ -16,6 +16,7 @@ public final class Constants {
   public static final class armConstants {
     public static final int MotorID = 11;
     public static final boolean MotorInvereted= true;
+    public static final double GearRatio=3;
   }
   public static final class DriverConstants {
      public static final int DriverControllerPort = 0;

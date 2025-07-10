@@ -4,8 +4,9 @@
 
 package frc.robot;
 
+import frc.robot.commands.GoToAngle;
 import frc.robot.commands.armcommand;
-import frc.robot.subsystems.arm;
+import frc.robot.subsystems.Arm;
 import edu.wpi.first.wpilibj2.command.Command;
 
 
@@ -16,8 +17,10 @@ import edu.wpi.first.wpilibj2.command.Command;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  private final arm subsystem = new arm();
- private Command autoCommand = new armcommand(subsystem, 0.3, 10.0);
+  private final Arm subsystem = new Arm();
+ private Command autoCommand = new GoToAngle(subsystem, 90);
+ 
+
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
