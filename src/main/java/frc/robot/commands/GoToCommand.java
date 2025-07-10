@@ -10,10 +10,11 @@ import frc.robot.subsystems.MyFirstSubsystem;
 public class GoToCommand extends Command {
 
     MyFirstSubsystem subsystem;
-    PIDController pid = new PIDController(0, 0, 0);
+    PIDController pid = new PIDController(0.005, 0.001, 0.0001);
     
 
     public GoToCommand( MyFirstSubsystem subsystem) {
+        System.out.println("nnnnnnnnnnnnnnnnnnnnnnn");
         this.subsystem = subsystem;
         addRequirements(subsystem);
         SmartDashboard.putData("pid",pid);
@@ -21,12 +22,13 @@ public class GoToCommand extends Command {
         pid.setTolerance(5, 30);
         pid.enableContinuousInput(-180,180);
         pid.setIZone(10);
-        pid.setIntegratorRange(-0.01,0.01);
-        SmartDashboard.putNumber("targetPosition", 0);
+        pid.setIntegratorRange(-0.0015,0.0015);
+        
+        
 
 
         addRequirements(subsystem);
-
+        System.out.println("dd");
     }
 
     // Called when the command is initially scheduled.
@@ -40,7 +42,9 @@ public class GoToCommand extends Command {
     public void execute() {
         double currentPosition = subsystem.getPosition();
         double target = SmartDashboard.getNumber("targetPosition", 0);
-       subsystem.setPower(pid.calculate(currentPosition, target)); // Adjust power as needed
+       
+        subsystem.setPower(pid.calculate(currentPosition, target)); // Adjust power as needed
+        System.out.println("d");
     
     }
 
