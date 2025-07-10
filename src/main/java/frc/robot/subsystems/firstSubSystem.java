@@ -50,5 +50,7 @@ public class firstSubSystem extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("mAngle", getPos());
+  
+    SmartDashboard.putNumber("power", motor.getAppliedOutput());
   }
 }

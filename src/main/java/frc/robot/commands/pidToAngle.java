@@ -12,10 +12,17 @@ public class pidToAngle extends Command{
 
     public pidToAngle(firstSubSystem subSystem) {
         this.subSystem = subSystem;
+        controller.setTolerance(2, 50);
+        addRequirements(subSystem);
+        SmartDashboard.putNumber("wantedAngle", 90);
+        SmartDashboard.putData("pid", controller);
+        SmartDashboard.putNumber("error", controller.getError());
+        
     }
 
     @Override
     public void initialize() {
+        controller.reset();
 
     }
 
@@ -23,14 +30,13 @@ public class pidToAngle extends Command{
     @Override
     public void execute() {
         double wantedAngle = SmartDashboard.getNumber("wantedAngle", 90);
-        subSystem.turnToAngle(wantedAngle);
+        subSystem.setPower(controller.calculate (subSystem.getPos(), wantedAngle));
     }
     
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        double error = controller.getError();
-        return error<2.0;
+        return controller.atSetpoint();
     }
 
     // Called once the command ends or is interrupted.
