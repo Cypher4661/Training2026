@@ -27,9 +27,9 @@ public class GoToCommand extends Command {
     public void execute() {
         double currentPosition = subsystem.getPosition();
         if (currentPosition < targetPosition) {
-            subsystem.setPower(0.01);
+            subsystem.setPower(0.015);
         } else {
-            subsystem.setPower(-0.01); // Adjust power as needed
+            subsystem.setPower(-0.015); // Adjust power as needed
         }
     }
 
