@@ -54,6 +54,8 @@ public class FirstSubsystems extends SubsystemBase{
     public void initSendable(SendableBuilder builder) {
         super.initSendable(builder);
         builder.addDoubleProperty("position", this::getPosition, null);
+        builder.addDoubleProperty("power", this.motor::getAppliedOutput, null);
     }
-
 }
+
+

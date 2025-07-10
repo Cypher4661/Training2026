@@ -23,12 +23,12 @@ public class goToAngle extends Command {
       this.position = subsystem.getPosition();
       this.subsystem = subsystem;
       controller = new PIDController(Kp, Ki, Kd);
-      this.target = SmartDashboard.getNumber("Target", 0.0);
-      Kp = SmartDashboard.getNumber("Kp", 0.0);
-      Ki = SmartDashboard.getNumber("Ki", 0.0);
-      Kd = SmartDashboard.getNumber("Kd", 0.0);
-      controller.setTolerance(2.0, 15.0);
+      SmartDashboard.putNumber("Target", 0.0);
+      controller.setTolerance(1, 2.0);
       controller.enableContinuousInput(-180, 180);
+      controller.setIZone(20);
+      controller.setIntegratorRange(-0.05, 0.05);
+      SmartDashboard.putData("PID", controller);
       addRequirements(subsystem);
    }
     public void initialize(){
@@ -37,7 +37,10 @@ public class goToAngle extends Command {
     }
 
     public void execute(){
-        double Power = controller.calculate(position);
+        target = SmartDashboard.getNumber("Target", 0.0);
+        position = subsystem.getPosition();
+    
+        double Power = controller.calculate(position, target);
         subsystem.setPower(Power);
     }
     
