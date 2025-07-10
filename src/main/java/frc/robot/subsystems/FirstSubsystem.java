@@ -15,7 +15,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.commands.ThirdCommand;
+import frc.robot.commands.GoToAnglePID;
 
 import static edu.wpi.first.units.Units.Degrees;
 import static frc.robot.Constants.FirstSubsystem.*;
@@ -24,13 +24,14 @@ public class FirstSubsystem extends SubsystemBase {
 
     private SparkMax motor;
     private TalonFX talonMotor;
+    
 
     public FirstSubsystem() {
         super();
         configureMotor();
         configureTalonMotor();
         SmartDashboard.putData("FirstSubsystem", this);
-        SmartDashboard.putData(new ThirdCommand(this));
+        SmartDashboard.putData("follow", new GoToAnglePID(this));
     }
 
     private void configureMotor() {
@@ -64,7 +65,6 @@ public class FirstSubsystem extends SubsystemBase {
      */
     public double getPosition() {
         return motor.getEncoder().getPosition() / GearRatio * 360;
-//        return Angle.ofBaseUnits(motor.getEncoder().getPosition(), Rotations).in(Degrees) / GearRatio;
     }
 
     public double getTalonPosition() {
@@ -77,10 +77,15 @@ public class FirstSubsystem extends SubsystemBase {
     }
 
     @Override
+    public void periodic() {
+        SmartDashboard.putNumber("Angle", getPosition());
+    }
+
+    @Override
     public void initSendable(SendableBuilder builder) {
         super.initSendable(builder);
         builder.addDoubleProperty("Position", this::getPosition, null);
+        builder.addDoubleProperty("power", this.motor::getAppliedOutput, null);
     }
-
 
 }
