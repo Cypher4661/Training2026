@@ -4,12 +4,14 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
+import frc.robot.commands.goToAngle;
 import frc.robot.commands.goToPosition;
 
 public class FirstSubsystems extends SubsystemBase{
@@ -22,6 +24,7 @@ public class FirstSubsystems extends SubsystemBase{
         SmartDashboard.putData("SubSystem", this);
         SmartDashboard.putData("cmd", new goToPosition(90, this));
         SmartDashboard.putData("cmd2", getCmd());
+        SmartDashboard.putData("Start", new goToAngle(this));
         
     }
 
