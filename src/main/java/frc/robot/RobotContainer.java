@@ -58,6 +58,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new GoToCommand(90.0, subsystem).andThen(new WaitCommand(5)).andThen(new GoToCommand(180.0, subsystem)).andThen(new WaitCommand(5)).andThen(new GoToCommand(0.0, subsystem));
+    return null;
   }
 }

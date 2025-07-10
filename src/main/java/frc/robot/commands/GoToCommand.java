@@ -1,49 +1,56 @@
 package frc.robot.commands;
 
+import java.lang.ModuleLayer.Controller;
+
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.MyFirstSubsystem;
 
 public class GoToCommand extends Command {
-
-    double targetPosition;
+    PIDController pidController = new PIDController(0,0,0);
     MyFirstSubsystem subsystem;
-    final double tolerance = 5;
 
-    public GoToCommand(double targetPosition, MyFirstSubsystem subsystem) {
+    public GoToCommand(MyFirstSubsystem subsystem) {
         this.subsystem = subsystem;
-        this.targetPosition = targetPosition;
         addRequirements(subsystem);
+        SmartDashboard.putData("pid",pidController );
+        SmartDashboard.putNumber("targetPosition", 0);
+        pidController.setTolerance(5, 20);
+        pidController.enableContinuousInput(-180,180); 
+        pidController.setIZone(30);
+        pidController.setIntegratorRange(-0.01,0.01);
+        SmartDashboard.getNumber("targetPosition", 0);
+
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+        pidController.reset();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
         double currentPosition = subsystem.getPosition();
-        if (currentPosition < targetPosition) {
-            subsystem.setPower(0.01);
-        } else {
-            subsystem.setPower(-0.01); // Adjust power as needed
-        }
+        double targetPosition = SmartDashboard.getNumber("targetPosition", 0);
+        subsystem.setPower(pidController.calculate(currentPosition, targetPosition));
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
         subsystem.stop();
-        System.out.println("GoToCommand ended at: " + subsystem.getPosition() + " with target: " + targetPosition);
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return Math.abs(subsystem.getPosition() - targetPosition) < tolerance; 
+        return pidController.atSetpoint();
     }
+
 
 }
