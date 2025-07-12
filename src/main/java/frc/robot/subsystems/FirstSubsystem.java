@@ -12,6 +12,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -24,6 +25,7 @@ public class FirstSubsystem extends SubsystemBase {
 
     private SparkMax motor;
     private TalonFX talonMotor;
+    SimpleMotorFeedforward ff = new SimpleMotorFeedforward(0.3, 0.05,4 );
     
 
     public FirstSubsystem() {
@@ -65,6 +67,10 @@ public class FirstSubsystem extends SubsystemBase {
      */
     public double getPosition() {
         return motor.getEncoder().getPosition() / GearRatio * 360;
+    }
+
+    public double getAngleDegrees() {
+        return MathUtil.inputModulus(getPosition(), -180, 180);
     }
 
     public double getTalonPosition() {
