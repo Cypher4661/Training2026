@@ -1,9 +1,6 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -13,12 +10,19 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static class subsystemConstans {
-    public static final int MororID = 1;  
-    public static final boolean MotorInverted = true;
-    
-  }
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+  }
+  public static class MyFirstSubsystem extends SubsystemBase{
+
+    public static final int MotorID = 11 ;
+    public static final boolean MotorInverted = false;
+    public static final double MotorPositionRatio = 1.0/9; // Ratio to convert encoder ticks to desired units (e.g., degrees, meters)
+
+  }
+  public static final class DriverConstants {
+    public static final int DriverControllerPort = 0;
+    public static final int OperatorControllerPort = 1;
+    public static final double DriverDeadband = 0.1;
   }
 }
