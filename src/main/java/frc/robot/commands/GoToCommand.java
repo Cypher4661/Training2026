@@ -12,7 +12,6 @@ public class GoToCommand extends Command {
     
 
     public GoToCommand( MyFirstSubsystem subsystem) {
-        System.out.println("nnnnnnnnnnnnnnnnnnnnnnn");
         this.subsystem = subsystem;
         addRequirements(subsystem);
         SmartDashboard.putData("pid",pid);
@@ -26,7 +25,6 @@ public class GoToCommand extends Command {
 
 
         addRequirements(subsystem);
-        System.out.println("dd");
     }
 
     // Called when the command is initially scheduled.

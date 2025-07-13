@@ -15,7 +15,7 @@ public class MyFirstSubsystem extends SubsystemBase {
   public MyFirstSubsystem () {
     super();
     motor = new SparkMax(Constants.MyFirstSubsystem.MotorID, MotorType.kBrushless);
-    motor.setInverted(Constants.MyFirstSubsystem.MotorInverted);
+    motor.setInverted(false);
     SmartDashboard.putData("go to angle", new GoToCommand(this));
 
   }
