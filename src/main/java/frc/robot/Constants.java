@@ -14,7 +14,14 @@ package frc.robot;
  */
 public final class Constants {
     public static final double GearRatio = 3;
-    public static final int MotorID = 11;
+    public static final int MotorID = 0;
     public static final boolean MotorInverted = false;
   
 }
+public static final class DriverConstants {
+     public static final int DriverControllerPort = 0;
+     public static final int OperatorControllerPort = 1;
+    
+     public static final double DriverDeadband = 0.1;
+     }
+    }
