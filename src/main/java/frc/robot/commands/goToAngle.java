@@ -1,44 +1,37 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.MotorSubsystem;
 
 public class goToAngle extends Command{
     private double target;
-    private MotorSubsystem subsystem;
-    private PIDController controller;
-
-    public goToAngle(MotorSubsystem subsystem, double targetAngle) {
-
-    }
+    MotorSubsystem subsystem;
+    PIDController pid = new PIDController(0.005, 0.001, 0.0001);
 
 
-    public goToAngle(double target, MotorSubsystem subsystem) {
-        this.target = target;
+    public goToAngle(MotorSubsystem subsystem) {
         this.subsystem = subsystem;
-        controller = new PIDController(0.005, 0.001, 0.0001);
-        controller.setTolerance(2.0, 10.0);
         addRequirements(subsystem);
+        SmartDashboard.putData("pid", pid);
+        SmartDashboard.putNumber("targetPosition", 0);
+        pid.setTolerance(5, 30);
+        pid.enableContinuousInput(-180, 180);
+        pid.setIZone(10);
+        pid.setIntegratorRange(-0.0015, 0.0015);
     }
 
     @Override
     public void initialize() {
-        controller.reset();
-        controller.setSetpoint(target);
+        pid.reset();
     }
 
     @Override
     public void execute() {
-        double current = subsystem.GetAngle();
-        double error = target - current;
-        if(error > 0) {
-            subsystem.setPower(0.015);
-        } else {
-            subsystem.setPower(-0.015);
-        }
-        double turnSpeed = controller.calculate(subsystem.GetAngle());
-        subsystem.setPower(turnSpeed);
+        double current = subsystem.getPosition();
+        double target = SmartDashboard.getNumber("targetPosition", 0);
+        subsystem.setPower(pid.calculate(current, target));
     }
 
     @Override
@@ -46,14 +39,12 @@ public class goToAngle extends Command{
         //double current = subsystem.GetAngle();
         //double error = target - current;
         //return Math.abs(error) < tolerance;
-        return controller.atSetpoint();
+        return pid.atSetpoint();
 
     }
 
     @Override
     public void end(boolean interrupted) {
         subsystem.stop();
-        System.out.println("PID Turn ended, final error : " + controller.getPositionError() + " degrees");
-        
     }
 }

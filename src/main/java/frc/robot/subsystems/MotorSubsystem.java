@@ -24,8 +24,8 @@ public class MotorSubsystem extends SubsystemBase {
  public void setPower(double power) {
   motor.set(power);
   }
-  public double GetAngle() {
-    return motor.getEncoder().getPosition()  * 360 / Constants.MyFirstSubsystemConstants.GearRatio;
+  public double getPosition() {
+    return motor.getEncoder().getPosition()  * Constants.MyFirstSubsystemConstants.GearRatio *360;
   }
  
 
@@ -35,6 +35,7 @@ public class MotorSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-      SmartDashboard.putNumber("angle", GetAngle());
+      SmartDashboard.putNumber("motor Position", getPosition());
+      SmartDashboard.putNumber("motor power", motor.getAppliedOutput());
   }
 }
