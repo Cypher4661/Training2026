@@ -18,14 +18,14 @@ public class MotorSubsystem extends SubsystemBase {
   /** Creates a new subsystems. */
   public MotorSubsystem() {
     super();
-    motor = new SparkMax(Constants.MotorID,MotorType.kBrushless);
+    motor = new SparkMax(Constants.MyFirstSubsystemConstants.MotorID,MotorType.kBrushless);
     SmartDashboard.putData("cmd", new goToPosition(90,this));
   }
  public void setPower(double power) {
   motor.set(power);
   }
   public double GetAngle() {
-    return motor.getEncoder().getPosition()  * 360 / Constants.GearRatio;
+    return motor.getEncoder().getPosition()  * 360 / Constants.MyFirstSubsystemConstants.GearRatio;
   }
  
 
