@@ -3,7 +3,7 @@ public final class Constants {
 
  public static final class MyFirstSubsystemConstants {
  public static final int MotorID = 11;
- public static final double GearRatio = 1/9;
+ public static final double GearRatio = 1.0/9;
  public static final Boolean MotorInverted = false;
  }
 
