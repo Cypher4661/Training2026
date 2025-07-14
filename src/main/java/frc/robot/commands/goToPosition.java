@@ -24,9 +24,9 @@ public class goToPosition extends Command {
         double current = subsystem.GetAngle();
         double error = target - current;
         if(error > 0) {
-            subsystem.setPower(0.2);
+            subsystem.setPower(0.15);
         } else {
-            subsystem.setPower(-0.2);
+            subsystem.setPower(-0.15);
         }
     }
 

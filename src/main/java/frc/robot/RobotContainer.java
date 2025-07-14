@@ -50,7 +50,9 @@ public class RobotContainer {
     // An example command will be run in autonomous
     return  new goToPosition(90, subsystem)
       .andThen(new WaitCommand(5))
-      .andThen(new goToPosition(135, subsystem));
+      .andThen(new goToPosition(135, subsystem))
+      .andThen(new WaitCommand(5))
+      .andThen(new goToPosition(0, subsystem));
   }
 }
 
