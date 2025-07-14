@@ -1,6 +1,6 @@
 package frc.robot.commands;
 
-public class goToAngle extends{
+public class goToAngle {
 
 
     

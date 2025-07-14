@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -35,6 +36,6 @@ public class MotorSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-      SmartDashboard.putNumber("angle",GetAngle());
+      SmartDashboard.putNumber("angle", GetAngle());
   }
 }
