@@ -15,8 +15,12 @@ package frc.robot;
 public final class Constants {
   public static class firstSubSystem {
     public static final int kDriverControllerPort = 0;
-    public static final int MotorID = 11;
+    public static final int cancoderID = 1;
+    public static final int MotorID2steer = 7;
+    public static final int MotorIDdrive = 8;
     public static final boolean MotorInverted = false;
     public static final double GearRatio = 3;
+    public static final double GearRatio2driver = 6.75;
+    public static final double GearRatio2stear = 150.0/7;
     }
 }
