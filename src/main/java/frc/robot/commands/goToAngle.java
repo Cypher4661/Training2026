@@ -36,9 +36,7 @@ public class goToAngle extends Command{
 
     @Override
     public boolean isFinished( ) {
-        //double current = subsystem.GetAngle();
-        //double error = target - current;
-        //return Math.abs(error) < tolerance;
+
         return pid.atSetpoint();
 
     }
