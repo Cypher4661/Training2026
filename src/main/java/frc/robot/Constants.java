@@ -25,6 +25,13 @@ public final class Constants {
     public static final int MotorID = 11 ;
     public static final boolean MotorInverted = false;
     public static final double MotorPositionRatio = 1.0/9; // Ratio to convert encoder ticks to desired units (e.g., degrees, meters)
+    public static final int DriveMoterId = 11;
+    public static final int SteerMOterId = 1;
+    public static final int CANcoderId = 3; // ID for the CANcoder used for steering angle feedback
+    public static final double DriveMoterRatio = 6.75;
+    public static final double SteerMoterRatio = 150.0/7.0; // Ratio for steering motor, e.g., 150:7 for a 21:1 gearbox
+    public static final boolean DriveMoterInverted = false; // Invert the drive motor if necessary
+    public static final boolean SteerMoterInverted = false; // Invert the steering motor if necessary
     
   }
   public static final class DriverConstants {

@@ -43,6 +43,7 @@ public class MyFirstSubsystem extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putNumber("Motor Position", getPosition());
     SmartDashboard.putNumber("Motor Power", motor.getAppliedOutput());
+    
   }
 
   
