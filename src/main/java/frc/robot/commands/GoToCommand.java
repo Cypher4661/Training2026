@@ -18,7 +18,7 @@ public class GoToCommand extends Command {
         addRequirements(subsystem);
         SmartDashboard.putData("pid",pidController );
         SmartDashboard.putNumber("targetPosition", 0);
-        pidController.setTolerance(5, 20);
+        pidController.setTolerance(5, 40);
         pidController.enableContinuousInput(-180,180); 
         pidController.setIZone(30);
         pidController.setIntegratorRange(-0.01,0.01);

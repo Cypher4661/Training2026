@@ -35,7 +35,7 @@ public class MyFirstSubsystem extends SubsystemBase {
   }
 
   public double getPosition() {
-    return motor.getEncoder().getPosition() * Constants.MyFirstSubsystem.MotorPositionRatio;
+    return motor.getEncoder().getPosition() * Constants.MyFirstSubsystem.MotorPositionRatio * 360;
   }
 
   @Override
