@@ -16,10 +16,10 @@ import frc.robot.commands.goToPosition;
 
 public class FirstSubsystems extends SubsystemBase{
     private final SparkMax motor;
-
+    
     public FirstSubsystems(){
         super();
-        motor = new SparkMax(Constants.FirstSubsystemsConstants.MotorId, MotorType.kBrushless);
+        motor = new SparkMax(Constants.FirstSubsystemsConstants.MotorId11, MotorType.kBrushless);
         motor.setInverted(Constants.FirstSubsystemsConstants.MotorInverted);
         SmartDashboard.putData("SubSystem", this);
         SmartDashboard.putData("cmd", new goToPosition(90, this));
