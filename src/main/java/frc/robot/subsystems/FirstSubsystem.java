@@ -15,7 +15,9 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Utils.Utils;
 import frc.robot.commands.GoToAnglePID;
 
 import static edu.wpi.first.units.Units.Degrees;
@@ -34,6 +36,8 @@ public class FirstSubsystem extends SubsystemBase {
         configureTalonMotor();
         SmartDashboard.putData("FirstSubsystem", this);
         SmartDashboard.putData("follow", new GoToAnglePID(this));
+        SmartDashboard.putNumber("TargetPower", 0);
+        SmartDashboard.putData("Manual Power", new RunCommand(()->setPower(SmartDashboard.getNumber("TargetPower", 0)), this));
     }
 
     private void configureMotor() {
