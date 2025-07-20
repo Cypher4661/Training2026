@@ -49,6 +49,8 @@ public class ModolaSubsystem extends SubsystemBase{
     public void periodic() {
         SmartDashboard.putNumber("PositionSteer", getPositionSteer());
         SmartDashboard.putNumber("PositionDrive", getPositionDrive());
+        SmartDashboard.putNumber("SteerPower",getPowerSteer());
+        SmartDashboard.putNumber("SteerPower",getPowerDrive());
     }
     @Override
     public void initSendable(SendableBuilder builder) {
