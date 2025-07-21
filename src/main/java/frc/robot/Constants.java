@@ -9,6 +9,8 @@ public static final class MyFirstSubsystemConstants {
     public static final double GearRatio = 1.0/9;
     public static final Boolean MotorInverted = false;
     public static final int CANcoderId = 9;
+    public static final double CANofset = 7.0;
+    public static final double diameter = 4 * 0.0254;
     }
 
 public static final class DriverConstants {
@@ -19,7 +21,7 @@ public static final class DriverConstants {
 
     }
     public static final class driveMotorConstants {
-        public static final int driveMotorID = 11; // Example drive motor ID
+        public static final int driveMotorID = 2; // Example drive motor ID
         public static final double driveMotorGearRatio = 6.75; // Example gear ratio for drive motor
         public static final boolean driveMotorInverted = false; // Example inversion for drive motor
     }
