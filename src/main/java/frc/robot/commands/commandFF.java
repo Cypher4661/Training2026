@@ -13,6 +13,7 @@ import frc.robot.subsystems.MyFirstSubsystem;
 public class commandFF extends Command {
   /** Creates a new commandFF. */
   public commandFF(MyFirstSubsystem subsystem) {
+    
 
   }
 

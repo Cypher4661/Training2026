@@ -7,10 +7,16 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -18,14 +24,24 @@ public class ModuleSubsystem extends SubsystemBase {
   private final SparkMax  steerMotor;
   private final SparkMax  driverMotor;
   private final CANcoder CANcoder;
+
+
   public ModuleSubsystem() {
     super();
     steerMotor = new SparkMax(Constants.MyFirstSubsystem.steerMotorId, MotorType.kBrushless);
     driverMotor = new SparkMax(Constants.MyFirstSubsystem.driverMotorId, MotorType.kBrushless);
     CANcoder = new CANcoder(Constants.MyFirstSubsystem.CANcoderId);
-    steerMotor.setInverted(Constants.MyFirstSubsystem.steerMotorIsInverted);
-    driverMotor.setInverted(Constants.MyFirstSubsystem.driverMotorIsInverted);
+    var cfg = new SparkMaxConfig();
+    cfg.inverted(Constants.MyFirstSubsystem.steerMotorIsInverted);
+    steerMotor.configure(cfg, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+    var cfg2 = new SparkMaxConfig();
+    cfg2.inverted(Constants.MyFirstSubsystem.driverMotorIsInverted);
+    driverMotor.configure(cfg2, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
     SmartDashboard.putData("modula", this);
+    SmartDashboard.putData("set steer 0.3",new StartEndCommand(()->setSteerPower(0.3), ()->setSteerPower(0),this));
+    SmartDashboard.putData("set steer 0.4",new StartEndCommand(()->setSteerPower(0.4), ()->setSteerPower(0),this));
+    SmartDashboard.putData("set drive 0.3",new StartEndCommand(()->setDriverPower(0.3), ()->setDriverPower(0),this));
+    SmartDashboard.putData("set drive 0.4",new StartEndCommand(()->setDriverPower(0.4), ()->setDriverPower(0),this));
   }
   public void setSteerPower(double power) {
     steerMotor.set(power);
@@ -33,9 +49,11 @@ public class ModuleSubsystem extends SubsystemBase {
   public void setDriverPower(double power) {
     driverMotor.set(power);
   }
-
+  
   public double getSteerPosition() {
-    return steerMotor.getEncoder().getPosition() * Constants.MyFirstSubsystem.steerMotorGearRatio * 360;
+    double angle = steerMotor.getEncoder().getPosition() / Constants.MyFirstSubsystem.steerMotorGearRatio * 360;
+    return MathUtil.inputModulus(angle, -180, 180);
+
   }
   public double getDriverPosition() {
     return driverMotor.getEncoder().getPosition() * Constants.MyFirstSubsystem.driverMotorGearRatio * 360;
