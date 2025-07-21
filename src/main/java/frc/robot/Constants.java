@@ -17,7 +17,7 @@ public final class Constants {
     public static final int MotorId11 = 11;
     public static final int MotorIdsteer = 1;
     public static final int MotorIddrive = 2;
-    public static final int CANcoderID = 0;
+    public static final int CANcoderID = 9;
     public static final boolean MotorInverted = false;
     public static final double GearRatio = 3;
     public static final double GearRatiosteer = 21.4285714;

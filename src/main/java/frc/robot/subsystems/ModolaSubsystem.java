@@ -45,6 +45,10 @@ public class ModolaSubsystem extends SubsystemBase{
         return motordrive.getEncoder().getPosition() / Constants.FirstSubsystemsConstants.GearRatiodrive * 360;
     }
 
+    public double CANcoder(){
+        return eNcoder.getAbsolutePosition().getValueAsDouble()*360;
+    }
+
     @Override
     public void periodic() {
         SmartDashboard.putNumber("PositionSteer", getPositionSteer());
@@ -59,5 +63,6 @@ public class ModolaSubsystem extends SubsystemBase{
         builder.addDoubleProperty("PositinDrive", this::getPositionDrive, null);
         builder.addDoubleProperty("powerSteer", this.motorsteer::getAppliedOutput, null);
         builder.addDoubleProperty("powerDrive", this.motordrive::getAppliedOutput, null);
+        builder.addDoubleProperty("Position", this::CANcoder, null);
     }
 }
