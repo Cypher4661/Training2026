@@ -21,7 +21,7 @@ public class goToPosition extends Command {
 
     @Override
     public void execute() {
-        double current = subsystem.GetAngle();
+        double current = subsystem.getPosition();
         double error = target - current;
         if(error > 0) {
             subsystem.setPower(0.015);
@@ -32,7 +32,7 @@ public class goToPosition extends Command {
 
     @Override
     public boolean isFinished( ) {
-        double current = subsystem.GetAngle();
+        double current = subsystem.getPosition();
         double error = target - current;
         return Math.abs(error) < tolerance;
     }

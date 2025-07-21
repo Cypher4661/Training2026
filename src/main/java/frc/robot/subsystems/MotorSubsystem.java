@@ -10,7 +10,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.commands.goToPosition;
+import frc.robot.commands.goToAngle;
 
 public class MotorSubsystem extends SubsystemBase {
   private final SparkMax motor;
@@ -18,14 +18,14 @@ public class MotorSubsystem extends SubsystemBase {
   /** Creates a new subsystems. */
   public MotorSubsystem() {
     super();
-    motor = new SparkMax(Constants.MotorID,MotorType.kBrushless);
-    SmartDashboard.putData("cmd", new goToPosition(90,this));
+    motor = new SparkMax(Constants.MyFirstSubsystemConstants.MotorID,MotorType.kBrushless);
+    SmartDashboard.putData("cmd", new goToAngle(this));
   }
  public void setPower(double power) {
   motor.set(power);
   }
-  public double GetAngle() {
-    return motor.getEncoder().getPosition()  * 360 / Constants.GearRatio;
+  public double getPosition() {
+    return motor.getEncoder().getPosition()  * Constants.MyFirstSubsystemConstants.GearRatio *360;
   }
  
 
@@ -35,6 +35,7 @@ public class MotorSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-      SmartDashboard.putNumber("angle",GetAngle());
+      SmartDashboard.putNumber("motor Position", getPosition());
+      SmartDashboard.putNumber("motor power", motor.getAppliedOutput());
   }
 }
