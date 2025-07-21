@@ -58,6 +58,8 @@ public class ModoleSubsystem extends SubsystemBase {
     }
     public void setDriveMotorVelocity(double velocity) {
     }
+    public double getAbseloteAngele() {
+        return canCoder.getAbsolutePosition().getValueAsDouble() * 360;
 
   @Override
   public void periodic() {
@@ -74,6 +76,6 @@ public class ModoleSubsystem extends SubsystemBase {
         builder.addDoubleProperty("Drive Motor Velocity", this::getdriveMotorVelocity, null);
         builder.addDoubleProperty("Steer Motor Power", this::getSteerPower, null);
         builder.addDoubleProperty("Drive Motor Power", this::getdriverPower, null);
-        
+        builder.addDoubleProperty("Abselote Angle", this::getAbseloteAngele, null);
     }
 }
