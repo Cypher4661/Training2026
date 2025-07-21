@@ -25,13 +25,6 @@ public class SparkMotor extends SparkMax implements Sendable {
   LogManager.LogEntry velocityEntry;
   LogManager.LogEntry positionEntry;
 
-  String lastControlMode;
-  double lastClosedLoopSP;
-  double lastClosedLoopError;
-  double lastPosition;
-  double lastVelocity;
-  double lastAcceleration;
-  double lastVoltage;
 
 
   public SparkMotor(SparkConfig config) {
@@ -151,7 +144,7 @@ public class SparkMotor extends SparkMax implements Sendable {
   }
 
   public String getCurrentControlMode() {
-    return lastControlMode;
+    return controlType.name();
   }
 
   /**
