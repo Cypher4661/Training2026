@@ -30,9 +30,11 @@ public final class Constants {
     public static final int CANcoderId = 9; // ID for the CANcoder used for steering angle feedback
     public static final double DriveMoterRatio = 6.75;
     public static final double SteerMoterRatio = 150.0/7.0; // Ratio for steering motor, e.g., 150:7 for a 21:1 gearbox
-    public static final boolean DriveMoterInverted = false; // Invert the drive motor if necessary
-    public static final boolean SteerMoterInverted = true
-  ; // Invert the steering motor if necessary
+    public static final boolean DriveMoterInverted = true; // Invert the drive motor if necessary
+    public static final boolean SteerMoterInverted = true;
+    public static final double diameter = 0.1016; // Diameter of the wheel in meters (e.g., 4 inches converted to meters)
+    public static final double CANcoderOffset = 8.0; // Offset for the CANcoder, adjust based on your setup
+  ; // Invert the steering motor if necessar sy
     
   }
   public static final class DriverConstants {
