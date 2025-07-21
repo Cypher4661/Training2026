@@ -55,7 +55,7 @@ public class ModuleSubsystem extends SubsystemBase {
     return driverMotor.getAppliedOutput();
   }
 
-  private double getAbsolutAngle() {
+  private double getAbsoluteAngle() {
     return CANcoder.getAbsolutePosition().getValueAsDouble() * 360; // Assuming CANcoder returns a value between 0 and 1
   }
 
@@ -71,11 +71,17 @@ public class ModuleSubsystem extends SubsystemBase {
       builder.addDoubleProperty("driver velocity", this::getdriverVelocity, null);
       builder.addDoubleProperty("steer power", this::getSteerPower, null);
       builder.addDoubleProperty("driver power", this::getdriverPower, null);
-      builder.addDoubleProperty("absolute angle", this::getAbsolutAngle, null);
+      builder.addDoubleProperty("absolute angle", this::getAbsoluteAngle, null);
   }
 
   @Override
   public void periodic() {
-
+    SmartDashboard.putNumber("Steer Position", getSteerPosition());
+    SmartDashboard.putNumber("Driver Position", getDriverPosition());
+    SmartDashboard.putNumber("Steer Velocity", getSteerVelocity());
+    SmartDashboard.putNumber("Driver Velocity", getdriverVelocity());
+    SmartDashboard.putNumber("Steer Power", getSteerPower());
+    SmartDashboard.putNumber("Driver Power", getdriverPower());
+    SmartDashboard.putNumber("Absolute Angle", getAbsoluteAngle());
   }
 }
