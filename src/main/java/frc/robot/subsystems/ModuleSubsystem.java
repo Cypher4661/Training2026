@@ -24,8 +24,7 @@ public class ModuleSubsystem extends SubsystemBase {
   private final SparkMax  steerMotor;
   private final SparkMax  driverMotor;
   private final CANcoder CANcoder;
-  private final SimpleMotorFeedforward steerFF = new SimpleMotorFeedforward(, );
-  private final SimpleMotorFeedforward driverFF = new SimpleMotorFeedforward(, );
+
 
   public ModuleSubsystem() {
     super();
@@ -38,6 +37,7 @@ public class ModuleSubsystem extends SubsystemBase {
     var cfg2 = new SparkMaxConfig();
     cfg2.inverted(Constants.MyFirstSubsystem.driverMotorIsInverted);
     driverMotor.configure(cfg2, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+    calibrateSteer();
     SmartDashboard.putData("modula", this);
     SmartDashboard.putData("set steer 0.3",new StartEndCommand(()->setSteerPower(0.3), ()->setSteerPower(0),this));
     SmartDashboard.putData("set steer 0.4",new StartEndCommand(()->setSteerPower(0.4), ()->setSteerPower(0),this));
@@ -50,6 +50,12 @@ public class ModuleSubsystem extends SubsystemBase {
   public void setDriverPower(double power) {
     driverMotor.set(power);
   }
+
+  private void calibrateSteer() {
+    // Calibrate the steer motor to the absolute position of the CANcoder
+    double absoluteAngle = getAbsoluteAngle() - Constants.MyFirstSubsystem.CANcoderOffSet;
+    steerMotor.getEncoder().setPosition(absoluteAngle * Constants.MyFirstSubsystem.steerMotorGearRatio / 360);
+  }
   
   public double getSteerPosition() {
     double angle = steerMotor.getEncoder().getPosition() / Constants.MyFirstSubsystem.steerMotorGearRatio * 360;
@@ -57,14 +63,14 @@ public class ModuleSubsystem extends SubsystemBase {
 
   }
   public double getDriverPosition() {
-    return driverMotor.getEncoder().getPosition() * Constants.MyFirstSubsystem.driverMotorGearRatio * 360;
+    return driverMotor.getEncoder().getPosition() / Constants.MyFirstSubsystem.driverMotorGearRatio * 360;
   }
 
   public double getSteerVelocity() {
-    return steerMotor.getEncoder().getVelocity() * Constants.MyFirstSubsystem.steerMotorGearRatio * 6;
+    return steerMotor.getEncoder().getVelocity() / Constants.MyFirstSubsystem.steerMotorGearRatio * 6;
   }
   public double getdriverVelocity() {
-    return driverMotor.getEncoder().getVelocity() * Constants.MyFirstSubsystem.driverMotorGearRatio * 6;
+    return driverMotor.getEncoder().getVelocity() / Constants.MyFirstSubsystem.driverMotorGearRatio / 60 * Math.PI * Constants.MyFirstSubsystem.diameter;
   }
 
   public double getSteerPower() {
@@ -95,12 +101,6 @@ public class ModuleSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Steer Position", getSteerPosition());
-    SmartDashboard.putNumber("Driver Position", getDriverPosition());
-    SmartDashboard.putNumber("Steer Velocity", getSteerVelocity());
-    SmartDashboard.putNumber("Driver Velocity", getdriverVelocity());
-    SmartDashboard.putNumber("Steer Power", getSteerPower());
-    SmartDashboard.putNumber("Driver Power", getdriverPower());
-    SmartDashboard.putNumber("Absolute Angle", getAbsoluteAngle());
+
   }
 }

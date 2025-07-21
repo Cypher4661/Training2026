@@ -33,6 +33,8 @@ public final class Constants {
     public static final double driverMotorGearRatio = 6.75;
     public static final boolean steerMotorIsInverted = false;
     public static final boolean driverMotorIsInverted = false;
+    public static final double CANcoderOffSet = 8;
+    public static final double diameter = 4 * 0.0254;
 
   }
   public static final class DriverConstants {
