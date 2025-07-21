@@ -11,6 +11,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -31,8 +32,13 @@ public class ModoleSubsystem extends SubsystemBase {
     var cfg2 = new SparkMaxConfig(); 
     cfg2.inverted(Constants.driveMotorConstants.driveMotorInverted);
     driveMotor.configure(cfg2, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+    SmartDashboard.putData("set steer 0.3", new StartEndCommand(()->setSteerMotorPower(0.3), ()->setSteerMotorPower(0), this));
+    SmartDashboard.putData("set steer 0.4", new StartEndCommand(()->setSteerMotorPower(0.4), ()->setSteerMotorPower(0), this));
+    SmartDashboard.putData("set steer 0.3", new StartEndCommand(()->setDriveMotorPower(0.3), ()->setDriveMotorPower(0), this));
+    SmartDashboard.putData("set steer 0.4", new StartEndCommand(()->setDriveMotorPower(0.4), ()->setDriveMotorPower(0), this));
     // Initialization code can be added here if needed.
-  }
+    setEncoder(getAbseloteAngele() - Constants.MyFirstSubsystemConstants.CANofset);
+    }
     public void setSteerMotorPower(double power) {
         steerMotor.set(power);
     }
@@ -59,10 +65,10 @@ public class ModoleSubsystem extends SubsystemBase {
         setDriveMotorPower(0);
     }
     public double getSteerMotorVelocity() {
-        return steerMotor.getEncoder().getVelocity() * Constants.steerMotorConstants.steerMotorGearRatio * 60;
+        return steerMotor.getEncoder().getVelocity() * Constants.steerMotorConstants.steerMotorGearRatio * 6;
     }
     public double getdriveMotorVelocity() {
-        return driveMotor.getEncoder().getVelocity() * Constants.driveMotorConstants.driveMotorGearRatio * 60;
+        return driveMotor.getEncoder().getVelocity() * Constants.driveMotorConstants.driveMotorGearRatio / 60 * Math.PI*Constants.MyFirstSubsystemConstants.diameter;
     }
     public void setSteerMotorVelocity(double velocity) {
     }
@@ -70,6 +76,9 @@ public class ModoleSubsystem extends SubsystemBase {
     }
     public double getAbseloteAngele() {
         return canCoder.getAbsolutePosition().getValueAsDouble() * 360;
+    }
+    public void setEncoder(double Angle) {
+        steerMotor.getEncoder().setPosition(Angle);
     }
     @Override
     public void periodic() {
@@ -89,3 +98,4 @@ public class ModoleSubsystem extends SubsystemBase {
         builder.addDoubleProperty("Abselote Angle", this::getAbseloteAngele, null);
     }
 }
+
