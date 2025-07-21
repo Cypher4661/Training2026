@@ -147,7 +147,7 @@ public class firstSubSystem extends SubsystemBase {
 
 
  public double getCancoderPosition() {
-   return concoderrr.getPosition().getValueAsDouble();
+   return concoderrr.getAbsolutePosition().getValueAsDouble()*360;
  }
 
 
