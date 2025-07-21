@@ -24,7 +24,8 @@ public class ModuleSubsystem extends SubsystemBase {
   private final SparkMax  steerMotor;
   private final SparkMax  driverMotor;
   private final CANcoder CANcoder;
-
+  private final SimpleMotorFeedforward steerFF = new SimpleMotorFeedforward(, );
+  private final SimpleMotorFeedforward driverFF = new SimpleMotorFeedforward(, );
 
   public ModuleSubsystem() {
     super();
