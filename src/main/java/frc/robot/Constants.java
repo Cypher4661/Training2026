@@ -8,7 +8,7 @@ public static final class MyFirstSubsystemConstants {
     public static final int MotorID = 11;
     public static final double GearRatio = 1.0/9;
     public static final Boolean MotorInverted = false;
-    public static final int CANcoderId = 3;
+    public static final int CANcoderId = 9;
     }
 
 public static final class DriverConstants {
