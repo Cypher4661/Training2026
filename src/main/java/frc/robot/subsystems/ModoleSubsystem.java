@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkMax;
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
@@ -14,8 +15,8 @@ public class ModoleSubsystem extends SubsystemBase {
   
   public ModoleSubsystem() {
     super();
-    steerMotor = new SparkMax(Constants.driveMotorConstants.driveMotorID, MotorType.kBrushless);
-    driveMotor = new SparkMax(Constants.DriverConstants.stee, MotorType.kBrushless);
+    steerMotor = new SparkMax(Constants.steerMotorConstants.steerMotorID, MotorType.kBrushless);
+    driveMotor = new SparkMax(Constants.driveMotorConstants.driveMotorID, MotorType.kBrushless);
     SmartDashboard.putData("Modole", this);
     // Initialization code can be added here if needed.
   }
@@ -25,8 +26,14 @@ public class ModoleSubsystem extends SubsystemBase {
     public void setDriveMotorPower(double power) {
         driveMotor.set(power);
     }
+    public double getSteerPower() {
+        return steerMotor.getAppliedOutput();
+      }
+      public double getdriverPower() {
+        return driveMotor.getAppliedOutput();
+    }
     public double getSteerMotorPosition() {
-        return steerMotor.getEncoder().getPosition() * Constants.driveMotorConstants.steerMotorGearRatio * 360;
+        return steerMotor.getEncoder().getPosition() * Constants.steerMotorConstants.steerMotorGearRatio * 360;
     }
     public double getDriveMotorPosition() {
         return driveMotor.getEncoder().getPosition() * Constants.driveMotorConstants.driveMotorGearRatio * 360;
@@ -41,11 +48,11 @@ public class ModoleSubsystem extends SubsystemBase {
         stopSteerMotor();
         stopDriveMotor();
     }
+    public double getSteerMotorVelocity() {
+        return steerMotor.getEncoder().getVelocity() * Constants.steerMotorConstants.steerMotorGearRatio * 60;
+    }
     public double getdriveMotorVelocity() {
         return driveMotor.getEncoder().getVelocity() * Constants.driveMotorConstants.driveMotorGearRatio * 60;
-    }
-    public double getSteerMotorVelocity() {
-        return steerMotor.getEncoder().getVelocity() * Constants.driveMotorConstants.steerMotorGearRatio * 60;
     }
     public void setSteerMotorVelocity(double velocity) {
     }
@@ -65,5 +72,8 @@ public class ModoleSubsystem extends SubsystemBase {
         builder.addDoubleProperty("Drive Motor Position", this::getDriveMotorPosition, null);
         builder.addDoubleProperty("Steer Motor Velocity", this::getSteerMotorVelocity, null);
         builder.addDoubleProperty("Drive Motor Velocity", this::getdriveMotorVelocity, null);
+        builder.addDoubleProperty("Steer Motor Power", this::getSteerPower, null);
+        builder.addDoubleProperty("Drive Motor Power", this::getdriverPower, null);
+        
     }
 }
