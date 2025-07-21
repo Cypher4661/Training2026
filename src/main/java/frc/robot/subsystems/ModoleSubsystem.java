@@ -65,7 +65,7 @@ public class ModoleSubsystem extends SubsystemBase {
         setDriveMotorPower(0);
     }
     public double getSteerMotorVelocity() {
-        return steerMotor.getEncoder().getVelocity() * Constants.steerMotorConstants.steerMotorGearRatio * 6;
+        return steerMotor.getEncoder().getVelocity() * Constants.steerMotorConstants.steerMotorGearRatio * 360 / 60;
     }
     public double getdriveMotorVelocity() {
         return driveMotor.getEncoder().getVelocity() * Constants.driveMotorConstants.driveMotorGearRatio / 60 * Math.PI*Constants.MyFirstSubsystemConstants.diameter;
