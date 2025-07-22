@@ -63,8 +63,16 @@ public class ModuleSubsystem extends SubsystemBase {
       () -> setDriverVelocity(SmartDashboard.getNumber("Driver Velocity Target", 0)),
       this
     ));
-    SmartDashboard.putData("stop driver", new RunCommand(()->setDriverPower(0), this));
-    SmartDashboard.putData("stop steer", new RunCommand(()->setSteerPower(0), this));
+    SmartDashboard.putData("stop steer", new StartEndCommand(
+      () -> setSteerPower(0),
+      () -> setSteerPower(0),
+      this
+      ));
+    SmartDashboard.putData("stop driver", new StartEndCommand(
+      () -> setDriverPower(0),
+      () -> setDriverPower(0),
+      this
+      ));
   }
   public void setSteerPower(double power) {
     steerMotor.set(power);
