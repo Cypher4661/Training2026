@@ -51,7 +51,7 @@ public class ModoleSubsystem extends SubsystemBase {
         public double getSteerPower() {
             return steerMotor.getAppliedOutput();
         }
-        public double getdriverPower() {
+        public double getDriverPower() {
             return driveMotor.getAppliedOutput();
         }
         public double getSteerMotorPosition() {
@@ -103,7 +103,7 @@ public class ModoleSubsystem extends SubsystemBase {
             builder.addDoubleProperty("Steer Motor Velocity", this::getSteerMotorVelocity, null);
             builder.addDoubleProperty("Drive Motor Velocity", this::getdriveMotorVelocity, null);
             builder.addDoubleProperty("Steer Motor Power", this::getSteerPower, null);
-            builder.addDoubleProperty("Drive Motor Power", this::getdriverPower, null);
+            builder.addDoubleProperty("Drive Motor Power", this::getDriverPower, null);
             builder.addDoubleProperty("Abselote Angle", this::getAbseloteAngele, null);
             
     }
