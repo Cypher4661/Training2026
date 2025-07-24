@@ -44,8 +44,10 @@ public class ModoleSubsystem extends SubsystemBase {
         
         double absoluteAngle = getAbseloteAngele() - Constants.MyFirstSubsystemConstants.CANofset;
         steerMotor.getEncoder().setPosition(absoluteAngle * Constants.steerMotorConstants.steerMotorGearRatio / 360);
-        
-        calibrateSteer();
+        System.out.println("======================================================");
+        System.out.println("abs angle = " + absoluteAngle + " pos=" + getSteerMotorPosition());
+        System.out.println(" raw pos = " + steerMotor.getEncoder().getPosition());
+        System.out.println("======================================================");
         addCommands();
         SmartDashboard.putData("modula", this);
     }

@@ -33,7 +33,7 @@ public static final class DriverConstants {
     public static final class steerMotorConstants {
         public static final int steerMotorID = 1; // Example steer motor ID
         public static final double steerMotorGearRatio = 150/7.0; // Example gear ratio for steer motor
-        public static final boolean steerMotorInverted = false; // Example inversion for steer motor
+        public static final boolean steerMotorInverted = true; // Example inversion for steer motor
     }
 }
 
