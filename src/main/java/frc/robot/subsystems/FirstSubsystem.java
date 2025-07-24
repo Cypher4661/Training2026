@@ -17,7 +17,7 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Utils.Utils;
+import frc.robot.utils.Utils;
 import frc.robot.commands.GoToAnglePID;
 
 import static edu.wpi.first.units.Units.Degrees;
