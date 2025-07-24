@@ -9,7 +9,8 @@
 package frc.robot;
 
 
-import frc.robot.subsystems.firstSubSystem;
+import frc.robot.subsystems.demasiaShit;
+//import frc.robot.subsystems.firstSubSystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 
@@ -20,7 +21,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 * subsystems, commands, and trigger mappings) should be declared here.
 */
 public class RobotContainer {
- firstSubSystem fsub = new firstSubSystem();
+ demasiaShit fsub = new demasiaShit();
  // The robot's subsystems and commands are defined here...
 
 
