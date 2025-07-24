@@ -37,9 +37,11 @@ public class ModuleSubsystem extends SubsystemBase {
 
   public ModuleSubsystem() {
     super();
+    //create motors and canCoder
     DriveMoter = new SparkMax(Constants.MyFirstSubsystem.DriveMoterId, MotorType.kBrushless);
     SteerMoter = new SparkMax(Constants.MyFirstSubsystem.SteerMOterId, MotorType.kBrushless);
     canCoder = new CANcoder(Constants.MyFirstSubsystem.CANcoderId);
+    //configure steer and drive motors
     var cfg = new SparkMaxConfig();
     cfg.inverted(Constants.MyFirstSubsystem.SteerMoterInverted);
     SteerMoter.configure(cfg, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
@@ -53,6 +55,7 @@ public class ModuleSubsystem extends SubsystemBase {
   }
 
   private void addCommands() {
+    //create commands for testing 
     SmartDashboard.putData("modela", this);
     SmartDashboard.putData("set steer 0.3",new StartEndCommand(()->setSteerPower(0.3), ()->setSteerPower(0),this));
     SmartDashboard.putData("set steer 0.4",new StartEndCommand(()->setSteerPower(0.4), ()->setSteerPower(0),this));
@@ -60,7 +63,7 @@ public class ModuleSubsystem extends SubsystemBase {
     SmartDashboard.putData("set drive 0.3",new StartEndCommand(()->setDriverPower(0.3), ()->setDriverPower(0),this));
     SmartDashboard.putData("set drive 0.4",new StartEndCommand(()->setDriverPower(0.4), ()->setDriverPower(0),this));
     SmartDashboard.putData("set drive 0.5",new StartEndCommand(()->setDriverPower(0.5), ()->setDriverPower(0),this));
-    
+    //create commands for setting velocity
     SmartDashboard.putNumber("Steer Velocity Target", 180);
     SmartDashboard.putData("Set Steer Velocity", new RunCommand(
       () -> setSteerVelocity(SmartDashboard.getNumber("Steer Velocity Target", 0)),
@@ -71,6 +74,7 @@ public class ModuleSubsystem extends SubsystemBase {
       () -> setDriverVelocity(SmartDashboard.getNumber("Driver Velocity Target", 0)),
       this
     ));
+    //create commands for stopping motors
     SmartDashboard.putData("stop steer", new StartEndCommand(
       () -> setSteerPower(0),
       () -> setSteerPower(0),
