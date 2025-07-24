@@ -13,7 +13,7 @@ public static final class MyFirstSubsystemConstants {
     public static final double GearRatio = 1.0/9;
     public static final Boolean MotorInverted = false;
     public static final int CANcoderId = 9;
-    public static final double CANofset = 7.0;
+    public static final double CANofset = 8.0;
     public static final double diameter = 4 * 0.0254;
     }
 
