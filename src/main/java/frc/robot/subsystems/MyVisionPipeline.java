@@ -12,15 +12,16 @@ import edu.wpi.first.vision.VisionThread;
 public class MyVisionPipeline implements VisionPipeline {
     @Override
     public void process(Mat input) {
-        // כאן יבוא האלגוריתם שלכם
+        // the algorithm
         Mat output = new Mat();
         
-        // דוגמה: המרה ל-HSV
+        // convereto to HSV
         Imgproc.cvtColor(input, output, Imgproc.COLOR_BGR2HSV);
         
-        // עיבוד נוסף...
+        // find the target
         boolean targetFound = false;
-        // שליחת תוצאות ל-NetworkTables
+
+        // update network table
         NetworkTableInstance.getDefault()
             .getTable("vision")
             .getEntry("target_found")

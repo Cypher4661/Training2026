@@ -1,6 +1,5 @@
 package frc.robot.utils;
 
-
 /** 
  * Class to hold all Talon FX/SRX configuration
  * Applicable to Phoenix 6
@@ -10,7 +9,7 @@ public class SparkConfig {
     public String name;             // Name of the motor - used to logging
 
     public double maxVolt = 12;     // Max Volt allowed
-    public double minVolt = -12;    // Min Vols allowed
+    public double minVolt = -maxVolt;     // Max Volt allowed
     public double maxCurrent = 40;  // Max current allowed
     public double rampUpTime = 0.3;   // max power change time from 0 to full. 
 
@@ -59,7 +58,6 @@ public class SparkConfig {
         this.id = id;
         this.name = name;
         this.maxVolt = config.maxVolt;
-        this.minVolt = config.minVolt;
         this.maxCurrent = config.maxCurrent;
         this.rampUpTime = config.rampUpTime;
         this.brake = config.brake;
@@ -79,9 +77,9 @@ public class SparkConfig {
      * @param minVolt
      * @return SparkConfig
      */
-    public SparkConfig withVolts(double maxVolt, double minVolt) {
+    public SparkConfig withVolts(double maxVolt) {
         this.maxVolt = maxVolt;
-        this.minVolt = minVolt;
+        this.minVolt = -maxVolt;
         return this;
     }
     
@@ -128,18 +126,18 @@ public class SparkConfig {
      * @param ratio - motor to mechanism ratio
      * @return SparkConfig
      */
-    public SparkConfig withMotorRatio(double ratio) {
-        this.motorRatio *= ratio;
+    public SparkConfig withMeterMotor(double gearRatio, double circonference) {
+        this.motorRatio *= gearRatio / circonference;
         return this;
     }
 
-    public SparkConfig withMeterMotor(double circonference) {
-        this.motorRatio *= 1 / circonference;
+    public SparkConfig withRadiansMotor(double gearRatio) {
+        this.motorRatio *= gearRatio / (Math.PI * 2);
         return this;
     }
 
-    public SparkConfig withRadiansMotor() {
-        this.motorRatio *= 1 / (Math.PI * 2);
+    public SparkConfig withDegreesMotor(double gearRatio) {
+        this.motorRatio *= gearRatio / (Math.PI * 2);
         return this;
     }
 

@@ -12,7 +12,7 @@ public class TalonConfig {
     public String name;             // Name of the motor - used to logging
 
     public double maxVolt = 12;     // Max Volt allowed
-    public double minVolt = -12;    // Min Vols allowed
+    public double minVolt = -maxVolt;    // Min Vols allowed
     public double maxCurrent = 40;  // Max current allowed
     public double maxCurrentTreshold = 42; // Current limit will be applied once the current reach this level
     public double maxCurrentTriggerTime = 0.2; // Current limit will be applied once the current reach the limit current for at least this time
@@ -72,12 +72,11 @@ public class TalonConfig {
     
     /** 
      * @param maxVolt
-     * @param minVolt
      * @return TalonConfig
      */
-    public TalonConfig withVolts(double maxVolt, double minVolt) {
+    public TalonConfig withVolts(double maxVolt) {
         this.maxVolt = maxVolt;
-        this.minVolt = minVolt;
+        this.minVolt = -maxVolt;
         return this;
     }
     
@@ -126,18 +125,18 @@ public class TalonConfig {
      * @param ratio - motor to mechanism ratio
      * @return TalonConfig
      */
-    public TalonConfig withMotorRatio(double ratio) {
-        this.motorRatio *= ratio;
+    public TalonConfig withMeterMotor(double gearRatio, double circonference) {
+        this.motorRatio *= gearRatio / circonference;
         return this;
     }
 
-    public TalonConfig withMeterMotor(double circonference) {
-        this.motorRatio *= 1 / circonference;
+    public TalonConfig withRadiansMotor(double gearRatio) {
+        this.motorRatio *= gearRatio / (Math.PI * 2);
         return this;
     }
 
-    public TalonConfig withRadiansMotor() {
-        this.motorRatio *= 1 / (Math.PI * 2);
+    public TalonConfig withDegreesMotor(double gearRatio) {
+        this.motorRatio *= gearRatio / 360;
         return this;
     }
 
