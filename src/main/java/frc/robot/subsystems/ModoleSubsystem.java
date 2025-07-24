@@ -11,6 +11,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.units.measure.Power;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -65,18 +66,23 @@ public class ModoleSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Driver Velocity Target", 1.0);
         SmartDashboard.putData("Set Driver Velocity", new RunCommand(
             () -> setDriveMotorVelocity(SmartDashboard.getNumber("Driver Velocity Target", 0)),
-            this
-            ));
+            this));
         SmartDashboard.putData("stop steer", new StartEndCommand(
             () -> setSteerMotorPower(0),
             () -> setSteerMotorPower(0),
-            this
-            ));
+            this));
         SmartDashboard.putData("stop driver", new StartEndCommand(
             () -> setDriveMotorPower(0),
             () -> setDriveMotorPower(0),
-            this
-            ));
+            this));    
+        SmartDashboard.putNumber("Target Steer Angle", 0);
+        SmartDashboard.putData("Set Target Steer Angle", new RunCommand(
+            () -> setSteerMotorVelocity(SmartDashboard.getNumber("Steer Angle Target", 0)),
+            this));
+        SmartDashboard.putNumber("Target Drive Velocity", 0);
+        SmartDashboard.putData("Set Target Drive Velocity", new RunCommand(
+            () -> setSteerMotorVelocity(SmartDashboard.getNumber("Drive Velocity Target", 0)),
+            this));
         }
           private void calibrateSteer() {
         // Calibrate the steer motor to the absolute position of the CANcoder
@@ -147,3 +153,4 @@ public class ModoleSubsystem extends SubsystemBase {
             
     }
 }
+
