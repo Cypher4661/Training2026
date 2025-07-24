@@ -8,6 +8,7 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -57,4 +58,10 @@ public class module extends SubsystemBase {
     SmartDashboard.putNumber("velocity steer", getVelocitysteer());
     // This method will be called once per scheduler run
   }
+
+@Override
+public void initSendable(SendableBuilder builder){
+  super.initSendable(builder);
+  builder.addBooleanArrayProperty("position steer", this::getPOSITIONsteer, null);
+  builder.addBooleanArrayProperty("position drive", this::getPOSITIONdriver, null);
 }
