@@ -8,10 +8,10 @@ public final class Constants {
   public static class Example {
     public static final TalonConfig TALON_CONFIG = new TalonConfig(7,new CANBus("rio"), "talon example motor")
           .withBrake(true)
-          .withCurrent(20,20,0)
+          .withCurrent(20)
           .withInvert(true)
           .withMeterMotor(12.7, 4*0.0254)
-          .withMotionMagic(3, 6, 10)
+          .withVelocities(3, 6, 10)
           .withPID(1, 0, 0, 0.12, 3.7, 1.2, 0)
           .withRampTime(0.3)
           .withVolts(6);
@@ -21,7 +21,7 @@ public final class Constants {
         .withInvert(false)
         .withPID(2,   0.2,   0, 0.1)
         .withRadiansMotor(8.4)
-        .withVelocity(20, 0, 30)
+        .withVelocities(20, 0, 30)
         .withRampTime(0.2)
         .withVolts(8);
   }

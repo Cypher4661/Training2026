@@ -68,7 +68,7 @@ public class TalonMotor extends TalonFX {
         cfg = new TalonFXConfiguration();
         cfg.CurrentLimits.SupplyCurrentLimit = config.maxCurrent;
         cfg.CurrentLimits.SupplyCurrentLowerLimit = config.maxCurrent;
-        cfg.CurrentLimits.SupplyCurrentLowerTime = config.maxCurrentTriggerTime;
+        cfg.CurrentLimits.SupplyCurrentLowerTime = 0.1;
         cfg.CurrentLimits.SupplyCurrentLimitEnable = true;
 
         cfg.ClosedLoopRamps.VoltageClosedLoopRampPeriod = config.rampUpTime;
@@ -111,9 +111,9 @@ public class TalonMotor extends TalonFX {
 
         cfg.Feedback.SensorToMechanismRatio = config.motorRatio;
 
-        cfg.MotionMagic.MotionMagicAcceleration = config.motionMagicAccel;
-        cfg.MotionMagic.MotionMagicCruiseVelocity = config.motionMagicVelocity;
-        cfg.MotionMagic.MotionMagicJerk = config.motionMagicJerk;
+        cfg.MotionMagic.MotionMagicAcceleration = config.maxAcceleration;
+        cfg.MotionMagic.MotionMagicCruiseVelocity = config.maxVelocity;
+        cfg.MotionMagic.MotionMagicJerk = config.maxJerk;
 
         getConfigurator().apply(cfg);
     }
@@ -136,14 +136,15 @@ public class TalonMotor extends TalonFX {
     }
 
     private void addLog() {
-        LogManager.addEntry(name + "/Position", getPosition(), 2);
-        LogManager.addEntry(name + "/Velocity", getVelocity(), 2);
-        LogManager.addEntry(name + "/Acceleration", getAcceleration(), 2);
-        LogManager.addEntry(name + "/Voltage", getMotorVoltage(), 2);
-        LogManager.addEntry(name + "/Current", getStatorCurrent(), 2);
-        LogManager.addEntry(name + "/CloseLoopError", getClosedLoopError(), 2);
-        LogManager.addEntry(name + "/CloseLoopSP", getClosedLoopReference(), 2);
+            LogManager.addEntry(name + "/Position", getPosition(), 2);
+            LogManager.addEntry(name + "/Velocity", getVelocity(), 2);
+            LogManager.addEntry(name + "/Acceleration", getAcceleration(), 2);
+            LogManager.addEntry(name + "/Voltage", getMotorVoltage(), 2);
+            LogManager.addEntry(name + "/Current", getStatorCurrent(), 2);
+            LogManager.addEntry(name + "/CloseLoopError", getClosedLoopError(), 2);
+            LogManager.addEntry(name + "/CloseLoopSP", getClosedLoopReference(), 2);
     }
+    
 
     public void checkElectronics() {
         if (getFaultField().getValue() != 0) {
@@ -260,7 +261,7 @@ public class TalonMotor extends TalonFX {
     }
 
     private double positionFeedForward(double positin) {
-        return Math.sin(positin * config.posToRad) * config.kSin;
+        return Math.cos(positin * config.posToRad) * config.kSin;
     }
 
     @SuppressWarnings("rawtypes")
@@ -456,9 +457,9 @@ public class TalonMotor extends TalonFX {
         Command configMotionMagic = new InstantCommand(() -> {
             MotionMagicConfigs cfg = new MotionMagicConfigs();
 
-            cfg.MotionMagicCruiseVelocity = config.motionMagicVelocity;
-            cfg.MotionMagicAcceleration = config.motionMagicAccel;
-            cfg.MotionMagicJerk = config.motionMagicJerk;
+            cfg.MotionMagicCruiseVelocity = config.maxVelocity;
+            cfg.MotionMagicAcceleration = config.maxAcceleration;
+            cfg.MotionMagicJerk = config.maxJerk;
 
             getConfigurator().apply(cfg);
         }).ignoringDisable(true);
@@ -468,12 +469,12 @@ public class TalonMotor extends TalonFX {
             public void initSendable(SendableBuilder builder) {
                 builder.setSmartDashboardType("Motion Magic Config");
 
-                builder.addDoubleProperty("Vel", () -> config.motionMagicVelocity,
-                        value -> config.motionMagicVelocity = value);
-                builder.addDoubleProperty("Acc", () -> config.motionMagicAccel,
-                        value -> config.motionMagicAccel = value);
-                builder.addDoubleProperty("Jerk", () -> config.motionMagicJerk,
-                        value -> config.motionMagicJerk = value);
+                builder.addDoubleProperty("Vel", () -> config.maxVelocity,
+                        value -> config.maxVelocity = value);
+                builder.addDoubleProperty("Acc", () -> config.maxAcceleration,
+                        value -> config.maxAcceleration = value);
+                builder.addDoubleProperty("Jerk", () -> config.maxJerk,
+                        value -> config.maxJerk = value);
 
                 builder.addBooleanProperty("Update", () -> configMotionMagic.isScheduled(),
                         value -> {
@@ -512,5 +513,13 @@ public class TalonMotor extends TalonFX {
         builder.addDoubleProperty("Velocity", this::getCurrentVelocity, null);
         builder.addDoubleProperty("Acceleration", this::getCurrentAcceleration, null);
         builder.addDoubleProperty("Voltage", this::getCurrentVoltage, null);
+    }
+
+    public double gearRatio() {
+        return config.motorRatio;
+    }
+
+    public String name() {
+        return name;
     }
 }
