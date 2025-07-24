@@ -1,25 +1,31 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
 
-import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.MotorExampleSubsytem;
 
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.DriveVelocityCommand;
+import frc.robot.commands.SetAngleCommand;
+import frc.robot.subsystems.newSubsystem;
 public class RobotContainer {
-  
-  MotorExampleSubsytem motorExampleSubsytem = new MotorExampleSubsytem();
-  // private final CommandXboxController m_driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
+
+  private final newSubsystem driveSubsystem = new newSubsystem();
+  private final newSubsystem angleSubsystem = new newSubsystem();
+  private DriveVelocityCommand drive = new DriveVelocityCommand(driveSubsystem, 1);
 
   public RobotContainer() {
-    configureBindings();
+      configureBindings();
   }
 
   private void configureBindings() {
+     // CommandXboxController controller = new CommandXboxController(0);
+
+    //  controller.a().whileTrue(new DriveVelocityCommand(driveSubsystem, 3000));
+    //  controller.b().whileTrue(new SetAngleCommand(angleSubsystem, 90));
   }
 
   public Command getAutonomousCommand() {
     return null;
-  }
+}
 }
