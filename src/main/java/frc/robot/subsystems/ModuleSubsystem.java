@@ -75,13 +75,11 @@ public class ModuleSubsystem extends SubsystemBase {
       this
     ));
     //create commands for stopping motors
-    SmartDashboard.putData("stop steer", new StartEndCommand(
-      () -> setSteerPower(0),
+    SmartDashboard.putData("stop steer", new RunCommand(
       () -> setSteerPower(0),
       this
       ));
-    SmartDashboard.putData("stop driver", new StartEndCommand(
-      () -> setDriverPower(0),
+    SmartDashboard.putData("stop driver", new RunCommand(
       () -> setDriverPower(0),
       this
     
