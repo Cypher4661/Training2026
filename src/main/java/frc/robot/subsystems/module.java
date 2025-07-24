@@ -24,10 +24,16 @@ public class module extends SubsystemBase {
   }
   public double getPOSITIONdriver(){
     return motordrive.getEncoder().getPosition()/Constants.firstSubSystem.GearRatio2driver*360;
+    
+  }
+  public double getVelocitydrive(){
+    return motordrive.getEncoder().getVelocity()/60;
   }
   public double getPOSITIONsteer(){
     return motorsteer.getEncoder().getPosition()/Constants.firstSubSystem.GearRatio2stear*360;
-
+  }
+  public double getVelocitysteer(){
+    return motordrive.getEncoder().getVelocity()/60;
   }
   public void setPoWer(double powersteer, double powerdriver){
     motorsteer.set(powersteer);
@@ -47,6 +53,8 @@ public class module extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putNumber("position drive", getPOSITIONdriver());
     SmartDashboard.putNumber("position steer", getPOSITIONsteer());
+    SmartDashboard. putNumber("velocity drive", getVelocitydrive());
+    SmartDashboard.putNumber("velocity steer", getVelocitysteer());
     // This method will be called once per scheduler run
   }
 }

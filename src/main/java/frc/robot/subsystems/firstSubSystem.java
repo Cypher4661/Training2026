@@ -20,7 +20,7 @@ public class firstSubSystem extends SubsystemBase {
 
   public firstSubSystem() {
     super();
-    motor = new SparkMax(Constants.firstSubSystem.MotorID, MotorType.kBrushless);
+    motor = new SparkMax(Constants.firstSubSystem.MotorIDdrive, MotorType.kBrushless);
 
     turnController.setTolerance(2.0);
     turnController.setIntegratorRange(-5, 5);

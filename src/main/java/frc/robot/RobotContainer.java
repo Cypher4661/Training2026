@@ -18,12 +18,14 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   firstSubSystem fsub = new firstSubSystem();
+  private 
   // The robot's subsystems and commands are defined here...
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    
     // Configure the trigger bindings
     configureBindings();
 
