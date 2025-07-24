@@ -73,6 +73,12 @@ public class ModuleSubsystem extends SubsystemBase {
       () -> setDriverPower(0),
       this
       ));
+
+
+      SmartDashboard.putNumber("Target steer angle", 0);
+    SmartDashboard.putData("Set Steer Angle", new RunCommand(
+      () -> setSteerAngle(SmartDashboard.getNumber("Target steer angle", 0)),
+      this));
   }
   public void setSteerPower(double power) {
     steerMotor.set(power);
@@ -126,6 +132,22 @@ public class ModuleSubsystem extends SubsystemBase {
     setDriverPower(ff + pid);
   }
 
+
+
+  public void setSteerAngle(double angle) {
+
+    double error = MathUtil.inputModulus(angle, -180, 180)- getSteerPosition();
+    if (error > 180) {
+      error -= 360;
+    } else if (error < -180) {
+      error += 360;
+    }
+    double velocity = error;
+    if (Math.abs(velocity) < 0.1) {
+      velocity = 0;
+    }
+    setSteerVelocity(velocity);
+  }
 
   @Override
   public void initSendable(SendableBuilder builder) {
