@@ -14,8 +14,9 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
   public static class MyFirstSubsystem extends SubsystemBase{
-
-    public static final int MotorID = 11 ;
+    public static final int CancoderID = 11;
+    public static final int MotorID = 8 ;
+    public static final int MotorID2 = 7;
     public static final boolean MotorInverted = false;
     public static final double MotorPositionRatio = 1.0/9; // Ratio to convert encoder ticks to desired units (e.g., degrees, meters)
 

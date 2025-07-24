@@ -37,7 +37,4 @@ public class MyFirstSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Motor Position", getPosition());
     SmartDashboard.putNumber("Motor Power", motor.getAppliedOutput());
   }
-
-  
-
 }
