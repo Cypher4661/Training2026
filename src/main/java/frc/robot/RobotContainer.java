@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+<<<<<<< HEAD
 import frc.robot.commands.MotorCommand;
 import frc.robot.commands.goToAngle;
 import frc.robot.commands.goToPosition;
@@ -29,8 +30,15 @@ public class RobotContainer {
   // Replace with CommandPS4Controller or CommandJoystick if needed
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
+=======
+import edu.wpi.first.wpilibj2.command.Command;
+
+public class RobotContainer {
+  
+  // private final CommandXboxController m_driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
+
+>>>>>>> origin/DemaciaUtils
   public RobotContainer() {
-    // Configure the trigger bindings
     configureBindings();
     configureDefaultCommands();
   }
@@ -42,18 +50,17 @@ public class RobotContainer {
   
   }   
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
   public Command getAutonomousCommand() {
+<<<<<<< HEAD
     // An example command will be run in autonomous
     return  new goToPosition(90, subsystem)
       .andThen(new WaitCommand(5))
       .andThen(new goToPosition(135, subsystem))
       .andThen(new WaitCommand(5))
       .andThen(new goToPosition(0, subsystem));
+=======
+    return null;
+>>>>>>> origin/DemaciaUtils
   }
 }
 
