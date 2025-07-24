@@ -1,6 +1,9 @@
 package frc.robot.subsystems;
 
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.utils.SparkMotor;
@@ -16,6 +19,10 @@ public class MotorExampleSubsytem extends SubsystemBase {
         super();
         talonMotor = new TalonMotor(Constants.Example.TALON_CONFIG);
         sparkMotor = new SparkMotor(Constants.Example.SPARKMOTOR_CONFIG);
+        SmartDashboard.putNumber("Set Power to", 0);
+        SmartDashboard.putData("set Talon", new RunCommand(()->setTalonPower(SmartDashboard.getNumber("Set Power to",0)),this));
+        SmartDashboard.putData("set Spark", new RunCommand(()->setSparkPower(SmartDashboard.getNumber("Set Power to",0)),this));
+        SmartDashboard.putData("stop", new InstantCommand(()->{setSparkPower(0); setTalonPower(0);},this));
     }
 
     // Method to set the motor speed
@@ -41,6 +48,7 @@ public class MotorExampleSubsytem extends SubsystemBase {
     }
 
     public void setSparkPower(double power) {
+        System.out.println(" power = " + power);
         sparkMotor.setDuty(power);
     }
     // Method to stop the motor

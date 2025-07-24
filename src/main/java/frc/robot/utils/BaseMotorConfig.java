@@ -271,7 +271,7 @@ public abstract class BaseMotorConfig<T extends BaseMotorConfig<T>> {
      * @return TalonConfig
      */
     public T withPID(double kp, double ki, double kd, double kf) {
-        return (T)withPID(id, kp, ki, kf);
+        return (T)withPID(1, id, kp, ki, kf);
     }
 
 

@@ -27,7 +27,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LogManager extends SubsystemBase {
 
-  public static LogManager logManager; // singelton reference
+  public static LogManager logManager = new LogManager(); // singelton reference
 
   private DataLog log;
   private NetworkTableInstance ntInst = NetworkTableInstance.getDefault();
@@ -187,7 +187,7 @@ public class LogManager extends SubsystemBase {
   ArrayList<LogEntry> logEntries = new ArrayList<>();
 
   // Log managerconstructor
-  public LogManager() {
+  private LogManager() {
     logManager = this;
 
     DataLogManager.start();

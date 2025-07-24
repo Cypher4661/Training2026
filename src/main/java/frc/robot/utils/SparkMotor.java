@@ -21,9 +21,6 @@ public class SparkMotor extends SparkMax implements Sendable {
   ClosedLoopSlot slot = ClosedLoopSlot.kSlot0;
   ControlType controlType = ControlType.kDutyCycle;
 
-  LogManager.LogEntry dutyCycleEntry;
-  LogManager.LogEntry velocityEntry;
-  LogManager.LogEntry positionEntry;
 
 
 
@@ -57,18 +54,16 @@ public class SparkMotor extends SparkMax implements Sendable {
       cfg.closedLoop.maxMotion.maxVelocity(config.maxVelocity).maxAcceleration(config.maxAcceleration);
     }
      this.configure(cfg, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
+     getEncoder();
   }
 
 
   private void addLog() {    
-    LogManager.addEntry(name + "/Position", encoder::getPosition, 3);
-    LogManager.addEntry(name + "/Velocity", encoder::getVelocity, 3);
-    LogManager.addEntry(name + "/Voltage", this::getAppliedOutput, 3);
+    LogManager.addEntry(name + "/Position", this::getCurrentPosition, 3);
+    LogManager.addEntry(name + "/Velocity", this::getCurrentVelocity, 3);
+    LogManager.addEntry(name + "/Voltage", this::getCurrentVoltage, 3);
     LogManager.addEntry(name + "/Current", this::getOutputCurrent, 3);
 
-    dutyCycleEntry = LogManager.getEntry(name + "/SetDutyCycle");
-    velocityEntry = LogManager.getEntry(name + "/SetVelocity");
-    positionEntry = LogManager.getEntry(name + "/SetPosition");
   }
 
   /**
@@ -219,7 +214,7 @@ public class SparkMotor extends SparkMax implements Sendable {
     return encoder.getVelocity();
   }
   public double getCurrentVoltage() {
-    return getBusVoltage();
+    return getAppliedOutput() * 12;
   }
 
   /**

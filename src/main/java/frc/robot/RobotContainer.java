@@ -5,9 +5,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.MotorExampleSubsytem;
 
 public class RobotContainer {
   
+  MotorExampleSubsytem motorExampleSubsytem = new MotorExampleSubsytem();
   // private final CommandXboxController m_driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   public RobotContainer() {

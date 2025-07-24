@@ -9,10 +9,6 @@ import com.ctre.phoenix6.CANBus;
 public class TalonConfig extends BaseMotorConfig<TalonConfig> {
     public CANBus canbus;           // Canbus 
 
-
-
-
-
     /** 
      * Constructor
      * @param id - canbus ID
