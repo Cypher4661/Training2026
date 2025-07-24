@@ -62,6 +62,9 @@ public class module extends SubsystemBase {
 @Override
 public void initSendable(SendableBuilder builder){
   super.initSendable(builder);
-  builder.addBooleanArrayProperty("position steer", this::getPOSITIONsteer, null);
-  builder.addBooleanArrayProperty("position drive", this::getPOSITIONdriver, null);
+  builder.addDoubleProperty("position steer", this::getPOSITIONsteer, null);
+  builder.addDoubleProperty("position drive", this::getPOSITIONdriver, null);
+  builder.addDoubleProperty("velocity steer ", this:: getVelocitysteer, null);
+  builder.addDoubleProperty("velocity drive", this:: getVelocitydrive, null);
+}
 }
