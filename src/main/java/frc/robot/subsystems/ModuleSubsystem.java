@@ -84,9 +84,19 @@ public class ModuleSubsystem extends SubsystemBase {
       this
     
     ));
+    SmartDashboard.putNumber("Target steer angle", 0);
+    SmartDashboard.putData("Set Steer Angle", new RunCommand(
+      () -> setSteerAngle(SmartDashboard.getNumber("Target steer angle", 0)),
+      this
+    ));
 
   }
-
+  public void setSteerAngle(double angle) {
+    // Set the steer motor to the desired angle
+    double error = angle - getSteerPosition();
+    double velocity = error * 4.0; // Proportional control for angle
+    setSteerVelocity(velocity);
+  }
   public void setSteerPower(double power) {
     SteerMoter.set(power);
   }
@@ -146,7 +156,7 @@ public class ModuleSubsystem extends SubsystemBase {
       builder.addDoubleProperty("Steer Power", this::getSteerPower, null);
       builder.addDoubleProperty("Driver Power", this::getdriverPower, null);
       builder.addDoubleProperty("Abselote Angle", this::getAbseloteAngele, null);
-
+      
   }
 
   @Override
