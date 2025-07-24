@@ -13,6 +13,8 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -39,8 +41,44 @@ public class ModoleSubsystem extends SubsystemBase {
         cfg2.inverted(Constants.driveMotorConstants.driveMotorInverted);
         driveMotor.configure(cfg2, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
 
+        calibrateSteer();
+        addCommands();
+        SmartDashboard.putData("modula", this);
+    }
         // Initialization code can be added here if needed.
-
+    private void addCommands() {
+        SmartDashboard.putData("modela", this);
+        SmartDashboard.putData("set steer 0.3",new StartEndCommand(()->setSteerMotorPower(0.3), ()->setSteerMotorPower(0),this));
+        SmartDashboard.putData("set steer 0.4",new StartEndCommand(()->setSteerMotorPower(0.4), ()->setSteerMotorPower(0),this));
+        SmartDashboard.putData("set steer 0.5",new StartEndCommand(()->setSteerMotorPower(0.5), ()->setSteerMotorPower(0),this));
+        SmartDashboard.putData("set drive 0.3",new StartEndCommand(()->setSteerMotorPower(0.3), ()->setSteerMotorPower(0),this));
+        SmartDashboard.putData("set drive 0.4",new StartEndCommand(()->setSteerMotorPower(0.4), ()->setSteerMotorPower(0),this));
+        SmartDashboard.putData("set drive 0.5",new StartEndCommand(()->setSteerMotorPower(0.5), ()->setSteerMotorPower(0),this));
+            
+        SmartDashboard.putNumber("Steer Velocity Target", 180);
+        SmartDashboard.putData("Set Steer Velocity", new RunCommand(
+            () -> setSteerMotorVelocity(SmartDashboard.getNumber("Steer Velocity Target", 0)),
+            this));
+        SmartDashboard.putNumber("Driver Velocity Target", 1.0);
+        SmartDashboard.putData("Set Driver Velocity", new RunCommand(
+            () -> setDriveMotorVelocity(SmartDashboard.getNumber("Driver Velocity Target", 0)),
+            this
+            ));
+        SmartDashboard.putData("stop steer", new StartEndCommand(
+            () -> setSteerMotorPower(0),
+            () -> setSteerMotorPower(0),
+            this
+            ));
+        SmartDashboard.putData("stop driver", new StartEndCommand(
+            () -> setSteerMotorPower(0),
+            () -> setSteerMotorPower(0),
+            this
+            ));
+        }
+          private void calibrateSteer() {
+        // Calibrate the steer motor to the absolute position of the CANcoder
+        double absoluteAngle = getAbseloteAngele() - Constants.MyFirstSubsystemConstants.CANofset;
+        steerMotor.getEncoder().setPosition(absoluteAngle * Constants.steerMotorConstants.steerMotorGearRatio / 360);
         }
         public void setSteerMotorPower(double power) {
             steerMotor.set(power);
@@ -108,4 +146,3 @@ public class ModoleSubsystem extends SubsystemBase {
             
     }
 }
-
