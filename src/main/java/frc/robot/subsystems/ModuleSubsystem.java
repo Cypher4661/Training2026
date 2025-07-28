@@ -93,9 +93,20 @@ public class ModuleSubsystem extends SubsystemBase {
   }
   public void setSteerAngle(double angle) {
     // Set the steer motor to the desired angle
-    double error = angle - getSteerPosition();
-    double velocity = error * 4.0; // Proportional control for angle
+    
+    double error = MathUtil.inputModulus(angle,-180, 180) - getSteerPosition();
+    if(error > 180) {
+      error -= 360;
+    } else if(error < -180) {
+      error += 360;
+    }
+    double velocity = error * 1.1; // Proportional control for angle
+    if (Math.abs(velocity) < 4.0) {
+      velocity = 0; // Stop if the error is small
+    }
     setSteerVelocity(velocity);
+
+
   }
   public void setSteerPower(double power) {
     SteerMoter.set(power);
