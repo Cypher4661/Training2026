@@ -13,21 +13,14 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
-  public static class modela1 extends SubsystemBase{
 
-    public static final int DriveMoterId = 2;
-    public static final int SteerMOterId = 1;
-    public static final int CANcoderId = 9; // ID for the CANcoder used for steering angle feedback
-    public static final double DriveMoterRatio = 6.75;
-    public static final double SteerMoterRatio = 150.0/7.0; // Ratio for steering motor, e.g., 150:7 for a 21:1 gearbox
-    public static final boolean DriveMoterInverted = true; // Invert the drive motor if necessary
-    public static final boolean SteerMoterInverted = true;
-    public static final double diameter = 0.1016; // Diameter of the wheel in meters (e.g., 4 inches converted to meters)
-    public static final double CANcoderOffset = 8.0; // Offset for the CANcoder, adjust based on your setup
-  ; 
-  
-    
-  }
+  public static final Modela[] modelas = new Modela[] {
+    new Modela(2, 1, 9, 6.75, 150.0/7.0, true, true, 0.1016, 8.0), // modela1
+    new Modela(2, 1, 9, 6.75, 150.0/7.0, true, true, 0.1016, 8.0), // modela2
+    new Modela(2, 1, 9, 6.75, 150.0/7.0, true, true, 0.1016, 8.0), // modela3
+    new Modela(2, 1, 9, 6.75, 150.0/7.0, true, true, 0.1016, 8.0)  // modela4
+};
+
   public static final class DriverConstants {
 
     public static final int DriverControllerPort = 0;
