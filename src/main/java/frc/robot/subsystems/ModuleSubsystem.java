@@ -38,15 +38,15 @@ public class ModuleSubsystem extends SubsystemBase {
   public ModuleSubsystem() {
     super();
     //create motors and canCoder
-    DriveMoter = new SparkMax(Constants.MyFirstSubsystem.DriveMoterId, MotorType.kBrushless);
-    SteerMoter = new SparkMax(Constants.MyFirstSubsystem.SteerMOterId, MotorType.kBrushless);
-    canCoder = new CANcoder(Constants.MyFirstSubsystem.CANcoderId);
+    DriveMoter = new SparkMax(Constants.modela1.DriveMoterId, MotorType.kBrushless);
+    SteerMoter = new SparkMax(Constants.modela1.SteerMOterId, MotorType.kBrushless);
+    canCoder = new CANcoder(Constants.modela1.CANcoderId);
     //configure steer and drive motors
     var cfg = new SparkMaxConfig();
-    cfg.inverted(Constants.MyFirstSubsystem.SteerMoterInverted);
+    cfg.inverted(Constants.modela1.SteerMoterInverted);
     SteerMoter.configure(cfg, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
     var cfg2 = new SparkMaxConfig();
-    cfg.inverted(Constants.MyFirstSubsystem.DriveMoterInverted);
+    cfg.inverted(Constants.modela1.DriveMoterInverted);
     DriveMoter.configure(cfg, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
     
     calibrateSteer();
@@ -115,23 +115,23 @@ public class ModuleSubsystem extends SubsystemBase {
     DriveMoter.set(power);
   }
   private void calibrateSteer() {
-    double absolotAngel = getAbseloteAngele() - Constants.MyFirstSubsystem.CANcoderOffset;
-    SteerMoter.getEncoder().setPosition(absolotAngel * Constants.MyFirstSubsystem.SteerMoterRatio / 360);
+    double absolotAngel = getAbseloteAngele() - Constants.modela1.CANcoderOffset;
+    SteerMoter.getEncoder().setPosition(absolotAngel * Constants.modela1.SteerMoterRatio / 360);
   }
   public double getSteerPosition() {
-    double angle =  SteerMoter.getEncoder().getPosition() / Constants.MyFirstSubsystem.SteerMoterRatio * 360;
+    double angle =  SteerMoter.getEncoder().getPosition() / Constants.modela1.SteerMoterRatio * 360;
     return MathUtil.inputModulus(angle, -180, 180);
     
   }
   public double getDriverPosition() {
-    return DriveMoter.getEncoder().getPosition() / Constants.MyFirstSubsystem.DriveMoterRatio * 360;
+    return DriveMoter.getEncoder().getPosition() / Constants.modela1.DriveMoterRatio * 360;
   }
 
   public double getSteerVelocity() {
-    return SteerMoter.getEncoder().getVelocity() / Constants.MyFirstSubsystem.SteerMoterRatio *360 / 60;
+    return SteerMoter.getEncoder().getVelocity() / Constants.modela1.SteerMoterRatio *360 / 60;
   }
   public double getdriverVelocity() {
-    return DriveMoter.getEncoder().getVelocity() / Constants.MyFirstSubsystem.DriveMoterRatio / 60 * Math.PI * Constants.MyFirstSubsystem.diameter; // Convert to radians per second
+    return DriveMoter.getEncoder().getVelocity() / Constants.modela1.DriveMoterRatio / 60 * Math.PI * Constants.modela1.diameter; // Convert to radians per second
   }
 
   public double getSteerPower() {

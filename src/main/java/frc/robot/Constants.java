@@ -13,11 +13,8 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
-  public static class MyFirstSubsystem extends SubsystemBase{
+  public static class modela1 extends SubsystemBase{
 
-    public static final int MotorID = 11 ;
-    public static final boolean MotorInverted = false;
-    public static final double MotorPositionRatio = 1.0/9; // Ratio to convert encoder ticks to desired units (e.g., degrees, meters)
     public static final int DriveMoterId = 2;
     public static final int SteerMOterId = 1;
     public static final int CANcoderId = 9; // ID for the CANcoder used for steering angle feedback
@@ -27,7 +24,8 @@ public final class Constants {
     public static final boolean SteerMoterInverted = true;
     public static final double diameter = 0.1016; // Diameter of the wheel in meters (e.g., 4 inches converted to meters)
     public static final double CANcoderOffset = 8.0; // Offset for the CANcoder, adjust based on your setup
-  ; // Invert the steering motor if necessar sy
+  ; 
+  
     
   }
   public static final class DriverConstants {
