@@ -20,8 +20,10 @@ public final class Constants {
     public static final int CANcoderID = 9;
     public static final boolean MotorInverted = false;
     public static final double GearRatio = 3;
-    public static final double GearRatiosteer = 21.4285714;
+    public static final double GearRatiosteer = 150.0/7;
     public static final double GearRatiodrive = 6.75;
+
+    public static final double CancoderOffset = 11;
     
   }
   public static class OperatorConstants {

@@ -7,7 +7,9 @@ package frc.robot;
 import frc.robot.commands.FirstCommand;
 import frc.robot.commands.goToPosition;
 import frc.robot.subsystems.FirstSubsystems;
+import frc.robot.subsystems.ModolaSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -20,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
  
   private final FirstSubsystems subsystems ;
+  private final ModolaSubsystem   Modola;
   // private Command autoCommand = new FirstCommand(subsystems, 0.5, 10);
   private Command autogotCommand;
   // The robot's subsystems and commands are defined here...
@@ -33,6 +36,7 @@ public class RobotContainer {
   public RobotContainer() {
     subsystems = new FirstSubsystems();
     autogotCommand = new goToPosition(90, subsystems);
+    Modola = new ModolaSubsystem();
     // Configure the trigger bindings
    // configureBindings();
   }
