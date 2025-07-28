@@ -274,6 +274,18 @@ public abstract class BaseMotorConfig<T extends BaseMotorConfig<T>> {
         return (T)withPID(1, id, kp, ki, kf);
     }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+ /**
+     * Set motor ratio 
+     * @param motorRatio true for brake mode, false for coast
+     * @return this config for chaining
+     */
+    @SuppressWarnings("unchecked")
+    public T withMotorRatio(Double motorRatio) {
+        this.motorRatio = motorRatio;
+        return (T) this;
+    }
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * Copy common fields from another BaseMotorConfig
