@@ -20,7 +20,7 @@ public class FirstSubsystems extends SubsystemBase{
     public FirstSubsystems(){
         super();
         motor = new SparkMax(Constants.FirstSubsystemsConstants.MotorId11, MotorType.kBrushless);
-        motor.setInverted(Constants.FirstSubsystemsConstants.MotorInverted);
+        motor.setInverted(Constants.FirstSubsystemsConstants.Motor11Inverted);
         SmartDashboard.putData("SubSystem", this);
         SmartDashboard.putData("cmd", new goToPosition(90, this));
         SmartDashboard.putData("cmd2", getCmd());
