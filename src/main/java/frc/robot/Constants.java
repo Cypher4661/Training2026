@@ -41,21 +41,15 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
-  public static class MyFirstSubsystem extends SubsystemBase{
+  public static class moduleConfiger extends SubsystemBase{
 
     public static final int MotorID = 11 ;
     public static final boolean MotorInverted = false;
     public static final double MotorPositionRatio = 1.0/3; // Ratio to convert encoder ticks to desired units (e.g., degrees, meters)
-    public static final int steerMotorId = 1;
-    public static final int driverMotorId = 2;
-    public static final int CANcoderId = 9;
-    public static final double steerMotorGearRatio = 150.0/7;
-    public static final double driverMotorGearRatio = 6.75;
-    public static final boolean steerMotorIsInverted = false;
-    public static final boolean driverMotorIsInverted = false;
-    public static final double CANcoderOffSet = 8;
-    public static final double diameter = 4 * 0.0254;
-
+    public static final moduleConfig FL = new moduleConfig("FL", 2,1,9,6.75,150.0/7,true,true,0.1016,8.0);
+    public static final moduleConfig FR = new moduleConfig("FR",2,1,9,6.75,150.0/7,true,true,0.1016,8.0);
+    public static final moduleConfig BL = new moduleConfig("BL",2,1,9,6.75,150.0/7,true,true,0.1016,8.0);
+    public static final moduleConfig BR = new moduleConfig("BR",2,1,9,6.75,150.0/7,true,true,0.1016,8.0);
   }
   public static final class DriverConstants {
 
