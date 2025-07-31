@@ -14,11 +14,12 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
 
-  public static final Modela[] modelas = new Modela[] {
-    new Modela(2, 1, 9, 6.75, 150.0/7.0, true, true, 0.1016, 8.0), // modela1
-    new Modela(2, 1, 9, 6.75, 150.0/7.0, true, true, 0.1016, 8.0), // modela2
-    new Modela(2, 1, 9, 6.75, 150.0/7.0, true, true, 0.1016, 8.0), // modela3
-    new Modela(2, 1, 9, 6.75, 150.0/7.0, true, true, 0.1016, 8.0)  // modela4
+  public static final class ModuleConfiger extends SubsystemBase {
+    
+    public static final ModuleConfig FL = new ModuleConfig("FL", 2, 1, 9, 6.75, 150.0/7.0, true, true, 0.1016, 8.0); // modela1
+    public static final ModuleConfig FR = new ModuleConfig("FR",2, 1, 9, 6.75, 150.0/7.0, true, true, 0.1016, 8.0); // modela2
+    public static final ModuleConfig BL = new ModuleConfig("BL",2, 1, 9, 6.75, 150.0/7.0, true, true, 0.1016, 8.0); // modela3
+    public static final ModuleConfig BR = new ModuleConfig("BR",2, 1, 9, 6.75, 150.0/7.0, true, true, 0.1016, 8.0);  // modela4
 };
 
   public static final class DriverConstants {
