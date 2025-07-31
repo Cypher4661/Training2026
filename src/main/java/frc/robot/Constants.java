@@ -1,23 +1,21 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.Swerve.ModuleConfig;
 
 public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
   public static class DriveConstants {
-    public static final int DriveMoter1 = 1;
-    public static final int SteerMoter1 = 2;
-    public static final int DriveMoter2 = 3;
-    public static final int SteerMoter2 = 4;
-    public static final int DriveMoter3 = 5;
-    public static final int SteerMoter3 = 6;
-    public static final int DriveMoter4 = 7;
-    public static final int SteerMoter4 = 8;
-
-    public static final int CANcoder1 = 9;
-    public static final int CANcoder2 = 10;
-    public static final int CANcoder3 = 11;
-    public static final int CANcoder4 = 12;
+    public static final int DriverControllerPort = 0;
+    public static final int operatorControllerPort = 1;
   }
+  public static final class ModuleConfiger extends SubsystemBase {
+    public static final ModuleConfig FL = new ModuleConfig(2, 1, 9, 150.0/7.0, 0, true, true, 0.1016, 8.0);
+    public static final ModuleConfig FR = new ModuleConfig(2, 1, 9, 150.0/7.0, 0, true, true, 0.1016, 8.0);
+    public static final ModuleConfig BR = new ModuleConfig(2, 1, 9, 150.0/7.0, 0, true, true, 0.1016, 8.0);
+    public static final ModuleConfig BL = new ModuleConfig(2, 1, 9, 150.0/7.0, 0, true, true, 0.1016, 8.0);
+  }
+  
 }

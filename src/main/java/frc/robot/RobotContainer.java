@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.subsystems.modoleSubsystem;
 
 
 
@@ -17,7 +18,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ModoleSubsystem subsystem = new ModoleSubsystem ();
+  private final modoleSubsystem subsystem = new modoleSubsystem ();
 
 
 
@@ -32,10 +33,10 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
+
   }
  
   private void configureDefaultCommands() {
   
   }   
-
 }
