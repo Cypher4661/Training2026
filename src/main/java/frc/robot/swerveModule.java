@@ -8,6 +8,8 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.utils.SparkMotor;
 import frc.robot.utils.TalonMotor;
 
@@ -31,6 +33,15 @@ public class swerveModule {
     public void setSteerPosition(double position) {
         steerMotor.setPositionVoltage(position);
     }
+    public double getSteerPosition() {
+        return steerMotor.getCurrentPosition();
+    }
+    public double getSteerVelocity() {
+        return steerMotor.getCurrentVelocity();
+    }
+    public double getSteerDuty() {
+        return steerMotor.getCurrentVoltage();
+    }
     public void setdriverDuty(double duty) {
         driverMotor.setDuty(duty);
     }
@@ -40,4 +51,35 @@ public class swerveModule {
     public void setdriverPosition(double position) {
         driverMotor.setPositionVoltage(position);
     }
+    public double getdriverPosition() {
+        return driverMotor.getCurrentPosition();
+    }
+    public double getdriverVelocity() {
+        return driverMotor.getCurrentVelocity();
+    }
+    public double getdriverDuty() {
+        return driverMotor.getCurrentVoltage();
+    }
+    public double getAbsolutePosition() {
+        return CANcoder.getAbsolutePosition().getValueAsDouble() * 360;
+    }
+    public void calibrateSteer(moduleConfig config) {
+        double absoluteAngle = getAbsolutePosition() - config.offSet;
+        steerMotor.getEncoder().setPosition(absoluteAngle * config.steerMotorGearRatio / 360);
+    }
+    public void setSwerveModuleState(SwerveModuleState state) {
+        state = optimize(state, getSteerPosition());
+        setSteerPosition(state.angle.getDegrees());
+        setdriverVelocity(state.speedMetersPerSecond);
+    }
+    private SwerveModuleState optimize(SwerveModuleState state, double angle) {
+        var delta = state.angle.getDegrees() - angle;
+        if(Math.abs(delta) > 90) {
+            return new SwerveModuleState(
+                -state.speedMetersPerSecond, state.angle.rotateBy(Rotation2d.kPi));
+        } else {
+            return new SwerveModuleState(state.speedMetersPerSecond, state.angle);
+        }
+    }
+
 }

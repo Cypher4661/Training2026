@@ -18,12 +18,13 @@ public class moduleConfig {
     public final double diameter;
     public final SparkConfig steerMotorConfig;
     public final TalonConfig driverMotorConfig;
+    public final double offSet;
 
 
     public moduleConfig(String name, int steerMotorId, int driverMotorId, int CANcoderId, 
                         double steerMotorGearRatio, double driverMotorGearRatio, 
                         boolean steerMotorIsInverted, boolean driverMotorIsInverted, 
-                        double CANcoderOffSet, double diameter) {
+                        double CANcoderOffSet, double diameter, double offSet) {
         this.name = name;
         this.steerMotorId = steerMotorId;
         this.driverMotorId = driverMotorId;
@@ -34,6 +35,7 @@ public class moduleConfig {
         this.driverMotorIsInverted = driverMotorIsInverted;
         this.CANcoderOffSet = CANcoderOffSet;
         this.diameter = diameter;
+        this.offSet = offSet;
         steerMotorConfig = new SparkConfig(steerMotorId, name + " steer motor")
             .withBrake(true)
             .withInvert(steerMotorIsInverted)

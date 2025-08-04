@@ -46,10 +46,10 @@ public final class Constants {
     public static final int MotorID = 11 ;
     public static final boolean MotorInverted = false;
     public static final double MotorPositionRatio = 1.0/3; // Ratio to convert encoder ticks to desired units (e.g., degrees, meters)
-    public static final moduleConfig FL = new moduleConfig("FL", 2,1,9,6.75,150.0/7,true,true,0.1016,8.0);
-    public static final moduleConfig FR = new moduleConfig("FR",2,1,9,6.75,150.0/7,true,true,0.1016,8.0);
-    public static final moduleConfig BL = new moduleConfig("BL",2,1,9,6.75,150.0/7,true,true,0.1016,8.0);
-    public static final moduleConfig BR = new moduleConfig("BR",2,1,9,6.75,150.0/7,true,true,0.1016,8.0);
+    public static final moduleConfig FL = new moduleConfig("FL", 2,1,9,6.75,150.0/7,true,true,0.1016,8.0,0);
+    public static final moduleConfig FR = new moduleConfig("FR",2,1,9,6.75,150.0/7,true,true,0.1016,8.0,0);
+    public static final moduleConfig BL = new moduleConfig("BL",2,1,9,6.75,150.0/7,true,true,0.1016,8.0,0);
+    public static final moduleConfig BR = new moduleConfig("BR",2,1,9,6.75,150.0/7,true,true,0.1016,8.0,0);
   }
   public static final class DriverConstants {
 
