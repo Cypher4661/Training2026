@@ -5,6 +5,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.utils.SparkMotor;
 import frc.robot.utils.TalonMotor;
 
@@ -64,6 +65,15 @@ public class SwerveModule {
         return driveMotor.getCurrentVelocity();
     }
     //cancoder
+    public double getCanCoderPosition() {
+        return canCoder.getAbsolutePosition().getValueAsDouble() * 360;
+    }
+    //state
+    public void setState(SwerveModuleState state) {
+        setSteerPosition(state.angle.getDegrees());
+        setDriveVelocity(state.speedMetersPerSecond);
+    }
+
 
 
 
