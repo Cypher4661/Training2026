@@ -23,7 +23,8 @@ import frc.robot.utils.SparkConfig;
 import frc.robot.utils.SparkMotor;
 import frc.robot.utils.TalonMotor;
 
-public class Modola implements Sendable {
+public class SwerveModule implements Sendable {
+    private final int ModuleID;
     private final SparkMotor SteerMotor;
     private final TalonMotor DriveMotor;
     private final CANcoder eNcoder;
@@ -34,12 +35,13 @@ public class Modola implements Sendable {
     SparkMaxConfig cfgSteer;
     SparkMaxConfig cfgDrive;
 
-    public Modola(ModuleConfig config) {
+    public SwerveModule(ModuleConfig config) {
+        ModuleID = config.ModuleID;
         SteerMotor = new SparkMotor(config.SteerConfig);
         DriveMotor = new TalonMotor(config.DriveConfig);
-        eNcoder = new CANcoder(Constants.ModolaConstants.CANcoderID);
+        eNcoder = new CANcoder(Constants.ModuleConstants.CANcoderID);
         calibrateSteer();
-        SmartDashboard.putData("Modil1", this);
+        SmartDashboard.putData("Modil"+ModuleID, this);
     }
 
     public void setIdleMode(boolean isBrake) {
@@ -48,8 +50,8 @@ public class Modola implements Sendable {
     }
 
     private void calibrateSteer() {
-        double angle = getCANcoderAbseloteAngle() - Constants.ModolaConstants.CancoderOffset;
-        SteerMotor.getEncoder().setPosition(angle / 360 * Constants.ModolaConstants.GearRatiosteer);
+        double angle = getCANcoderAbseloteAngle() - Constants.ModuleConstants.CancoderOffset;
+        SteerMotor.getEncoder().setPosition(angle / 360 * Constants.ModuleConstants.GearRatiosteer);
     }
 
     public void setSteerPower(double powersteer) {
@@ -74,7 +76,7 @@ public class Modola implements Sendable {
     }
 
     public double getSteerPosition() {
-        double angle = SteerMotor.getEncoder().getPosition() / Constants.ModolaConstants.GearRatiosteer * 360;
+        double angle = SteerMotor.getCurrentPosition();
         return MathUtil.inputModulus(angle, -180, 180);
     }
 
@@ -97,6 +99,7 @@ public class Modola implements Sendable {
     }
 
     public void setSteerVelocity(double velocity) {
+        SteerMotor.setVelocity(velocity);
         setSteerPower(SteerFF.calculate(velocity) + SteerPID.calculate(velocity));
     }
 
