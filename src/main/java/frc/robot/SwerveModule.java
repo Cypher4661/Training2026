@@ -14,10 +14,7 @@ public class SwerveModule {
     public final SparkMotor steerMotor;
     public final TalonMotor driveMotor;
     public final CANcoder canCoder;
-    private void calibrateSteer() {
-        double absolotAngel = getAbseloteAngele() - Constants.MyFirstSubsystem.CANcoderOffset;
-        SteerMoter.getEncoder().setPosition(absolotAngel * Constants.MyFirstSubsystem.SteerMoterRatio / 360);
-    }
+
     
 
     public SwerveModule(ModuleConfig config) {
@@ -25,6 +22,10 @@ public class SwerveModule {
         this.driveMotor = new TalonMotor(config.driveConfig);
         this.canCoder = new CANcoder(config.CANcoderId);
 
+    }
+    private void calibrateSteer(ModuleConfig config) {
+        double absolotAngel = getAbseloteAngele() - config.offset ;
+        steerMotor.getEncoder().setPosition(absolotAngel * config.SteerMoterRatio / 360);
     }
     //set
     public void setSteerDuty(double dutyCycle) {
@@ -67,6 +68,9 @@ public class SwerveModule {
     public double getDriveDuty() {
         return driveMotor.getCurrentVelocity();
     }
+    public double getAbseloteAngele() {
+        return canCoder.getAbsolutePosition().getValueAsDouble() * 360;
+      }
     //cancoder
     public double getCanCoderPosition() {
         return canCoder.getAbsolutePosition().getValueAsDouble() * 360;
