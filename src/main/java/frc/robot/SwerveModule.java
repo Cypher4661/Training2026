@@ -22,6 +22,7 @@ public class SwerveModule {
         this.canCoder = new CANcoder(config.CANcoderId);
 
     }
+    //set
     public void setSteerDuty(double dutyCycle) {
         steerMotor.setDuty(dutyCycle);
         
@@ -32,6 +33,17 @@ public class SwerveModule {
     public void setSteerPosition(double position) {
         steerMotor.setPositionVoltage(position);
     }
+    //get
+    public double getSteerPosition() {
+        return steerMotor.getCurrentPosition();
+    }
+    public double getSteerVelocity() {
+        return steerMotor.getCurrentVelocity();
+    }
+    public double getSteerDuty() {
+        return steerMotor.getCurrentVelocity();
+    }
+    //set
     public void setDriveDuty(double dutyCycle) {
         driveMotor.setDuty(dutyCycle);
     }
@@ -41,6 +53,21 @@ public class SwerveModule {
     public void setDrivePosition(double position) {
         driveMotor.setPositionVoltage(position);
     }
+    //get
+    public double getDrivePosition() {
+        return driveMotor.getCurrentPosition();
+    }
+    public double getDriveVelocity() {
+        return driveMotor.getCurrentVelocity();
+    }
+    public double getDriveDuty() {
+        return driveMotor.getCurrentVelocity();
+    }
+    //cancoder
+
+
+
+
 
 
 
