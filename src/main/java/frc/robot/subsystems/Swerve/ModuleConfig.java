@@ -16,11 +16,12 @@ public class ModuleConfig {
     public final double dimeter;
     public final double CANcoderOffset;
     public final String name ;
-    public final SparkConfig steerconfig;
-    public final TalonConfig driveconfig;
+    public final SparkConfig steerConfig;
+    public final TalonConfig driveConfig;
+    public final double Offset; // Offset for the steer motor, if needed
 
     public ModuleConfig(String name, int driveMotorID, int steerMotorID, int CANcoderID, double driveMotorRatio, double steerMotorRatio, 
-    boolean driveMotorInvrted, boolean steerMotorInvrted, double dimeter, double CANcoderOffset) {
+    boolean driveMotorInvrted, boolean steerMotorInvrted, double dimeter, double CANcoderOffset, double offset) {
 
         this.name = name;
         this.driveMotorID = driveMotorID;
@@ -32,8 +33,10 @@ public class ModuleConfig {
         this.CANcoderOffset = CANcoderOffset;
         this.driveMotorInvrted = driveMotorInvrted;
         this.steerMotorInvrted = steerMotorInvrted;
+        this.Offset = offset;
+        // Initialize the configurations for the motors
 
-        steerconfig = new SparkConfig(steerMotorID, name + "/ steer motor")
+        steerConfig = new SparkConfig(steerMotorID, name + "/ steer motor")
             .withVolts(8,-8)
             .withCurrent(20)
             .withBrake(true)
@@ -42,7 +45,7 @@ public class ModuleConfig {
             .withMotorRatio(steerMotorRatio)
             .withMeterMotor(dimeter * Math.PI);
 
-        driveconfig = new TalonConfig(driveMotorID, new CANBus("rio"), name + "/ drive motor")
+        driveConfig = new TalonConfig(driveMotorID, new CANBus("rio"), name + "/ drive motor")
             .withVolts(12, -12)
             .withCurrent(20, 0,0)
             .withBrake(true)
