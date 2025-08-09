@@ -20,6 +20,9 @@ public class SwerveModule implements Sendable {
     protected SwerveModuleState state = new SwerveModuleState();
     protected SwerveModulePosition position = new SwerveModulePosition();
     private double lastSteerPosition = 0;
+    private double steerTargetDiff = 0;
+    private double driveTarget = 0;
+
 
     SwerveModule(Constants.ModuleConfig config) {
         this.config = config;
@@ -52,34 +55,25 @@ public class SwerveModule implements Sendable {
         position.distanceMeters = drive.getCurrentPosition() + steerPosition * Constants.STEER_TO_DISTANCE_RATIO;
     }
 
+    private void optimaizeTarget() {
+        if(steerTargetDiff > 90) {
+            steerTargetDiff -= 180;
+            driveTarget = -driveTarget;
+        } else if(steerTargetDiff < -90) {
+            steerTargetDiff += 180;
+            driveTarget = -driveTarget;
+        }
+    }
+
     public void setState(SwerveModuleState state) {
-        double targetAngle = state.angle.getDegrees();
-        double targetVelocity = state.speedMetersPerSecond;
-        double currentAngle = steer.getCurrentPosition();
-        double diff = MathUtil.inputModulus(targetAngle-currentAngle, -180, 180);
-        if(diff < -90) {
-            diff += 180;
-            targetVelocity = -targetVelocity;
-        } else if(diff > 90) {
-            diff -= 180;
-            targetVelocity = -targetVelocity;            
-        }
-        if(diff > Constants.MAX_SET_STATE_STEER_ADDITION) {
-            diff += Constants.MAX_SET_STATE_STEER_ADDITION;
-        } else if(diff > -Constants.MAX_SET_STATE_STEER_ADDITION) {
-            diff *= 2.0;
-        } else {
-            diff -= Constants.MAX_SET_STATE_STEER_ADDITION;
-        }
-        if(diff < -90) {
-            diff += 180;
-            targetVelocity = -targetVelocity;
-        } else if(diff > 90) {
-            diff -= 180;
-            targetVelocity = -targetVelocity;            
-        }
-        steer.setMotion(currentAngle + diff);
-        drive.setVelocity(targetVelocity);
+        double currentPosition = steer.getCurrentPosition();
+        steerTargetDiff = MathUtil.inputModulus(state.angle.getDegrees() - currentPosition,-180,180);
+        driveTarget = state.speedMetersPerSecond;
+        optimaizeTarget();
+        steerTargetDiff = (MathUtil.clamp(steerTargetDiff * Constants.STATE_STEER_ADDITION, steerTargetDiff-Constants.MAX_SET_STATE_STEER_ADDITION, steerTargetDiff+Constants.MAX_SET_STATE_STEER_ADDITION));
+        optimaizeTarget();
+        steer.setMotion(currentPosition + steerTargetDiff);
+        drive.setVelocity(driveTarget);
     }
 
     public void setSteerPower(double power) {
@@ -105,6 +99,8 @@ public class SwerveModule implements Sendable {
     public void showBaseCommands(Subsystem subsystem) {
         MotorCommands.showRandomPowerCommand(config.name + " Steer Random Power",-0.6, 0.6, 0.2, subsystem, steer);
         MotorCommands.showRandomPowerCommand(config.name + " Drive Random Power",-1, 1, 0.2, subsystem, drive);
+        MotorCommands.showSlowPowerCommand(config.name + " Steer Slow Power",0.07, 0.01, 1, subsystem, steer);
+        MotorCommands.showSlowPowerCommand(config.name + " Drive Slow Power",0.01, 0.01, 1, subsystem, drive);
         MotorCommands.showMotionCommand(config.name + " Steer Angle",subsystem, steer);
         MotorCommands.showVelocityCommand(config.name + " Drive Velocity",subsystem, drive);
     }

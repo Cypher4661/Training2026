@@ -40,7 +40,7 @@ public class SysidCalculate {
         double v = Math.abs(data.velocity);
         int i = v < vRange[0] ? 0 : v < vRange[1] ? 1 : 2;
         
-        if(valid(v, 0.1) && valid(data.voltage, 0.2)) {
+        if(valid(v, 0.1) && valid(data.voltage, 0.05)) {
             if(data.prev != null) {
                 if(valid(data.prev.velocity, 0.1) && valid(data.prev.voltage, 0.2)) {
                     return i;
@@ -138,6 +138,7 @@ public class SysidCalculate {
                 }
             }
         }
+        Sysid.msg(String.format("Min Power to Move = %.3f",motorData.minPowerToMove));
     }
 
     public double getRange(VelocityRange range) {
