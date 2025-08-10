@@ -22,6 +22,7 @@ import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.Demacia.utils.StatusSignalData;
 import frc.Demacia.utils.Elastic.UpdateArray;
 import frc.Demacia.utils.Log.LogManager;
@@ -87,14 +88,32 @@ public class TalonMotor extends TalonFX implements MotorInterface {
         updatePID(false);
         cfg.Voltage.PeakForwardVoltage = config.maxVolt;
         cfg.Voltage.PeakReverseVoltage = config.minVolt;
+        configureMotionMagic(false);
 
+
+        getConfigurator().apply(cfg);
+    }
+
+    private void configureMotionMagic(boolean apply) {
         cfg.MotionMagic.MotionMagicAcceleration = config.maxAcceleration / unitMultiplier;
         cfg.MotionMagic.MotionMagicCruiseVelocity = config.maxVelocity / unitMultiplier;
         cfg.MotionMagic.MotionMagicJerk = config.maxJerk / unitMultiplier;
-        cfg.MotionMagic.MotionMagicExpo_kA = config.pid[slot].ka();
-        cfg.MotionMagic.MotionMagicExpo_kV = config.pid[slot].kv();
+        if(config.maxAcceleration > 0) {
+            cfg.MotionMagic.MotionMagicExpo_kA = 12.0 / config.maxAcceleration * unitMultiplier;
+        } else {
+            cfg.MotionMagic.MotionMagicExpo_kA = config.pid[slot].ka() * unitMultiplier;
+        }
+        if(config.maxVelocity > 0) {
+            cfg.MotionMagic.MotionMagicExpo_kV = 12.0 / config.maxVelocity  * unitMultiplier;
+        } else {
+            cfg.MotionMagic.MotionMagicExpo_kA = config.pid[slot].kv() * unitMultiplier;
+        }
+        if(apply) {
+            getConfigurator().apply(cfg.MotionMagic);
+            System.out.println(" motion param " + config.maxVelocity + " , " + config.maxAcceleration + " k=" 
+                + cfg.MotionMagic.MotionMagicExpo_kV + ", " + cfg.MotionMagic.MotionMagicExpo_kA);
+        }
 
-        getConfigurator().apply(cfg);
     }
 
     private void updatePID(boolean apply) {
@@ -235,6 +254,15 @@ public class TalonMotor extends TalonFX implements MotorInterface {
     public void setMotion(double position) {
         setMotion(position, 0);
     }
+    @Override
+    public void setAngle(double angle, double feedForward) {
+      setMotion(MotorUtils.getPositionForAngle(getCurrentPosition(), angle, config.isRadiansMotor), feedForward);
+    }
+    @Override
+    public void setAngle(double angle) {
+      setMotion(MotorUtils.getPositionForAngle(getCurrentPosition(), angle, config.isRadiansMotor));
+    }
+  
 
     public void setPositionVoltage(double position, double feedForward) {
         setControl(positionVoltage.withPosition(position/unitMultiplier).withFeedForward(feedForward));
@@ -323,11 +351,7 @@ public class TalonMotor extends TalonFX implements MotorInterface {
                 config.maxVelocity = array[0];
                 config.maxAcceleration = array[1];
                 config.maxJerk = array[2];
-                cfg.MotionMagic.MotionMagicCruiseVelocity = config.maxVelocity / unitMultiplier;
-                cfg.MotionMagic.MotionMagicAcceleration = config.maxAcceleration / unitMultiplier;
-                cfg.MotionMagic.MotionMagicJerk = config.maxJerk / unitMultiplier;
-    
-                getConfigurator().apply(cfg.MotionMagic);
+                configureMotionMagic(true);
             });
     }
 
@@ -387,6 +411,10 @@ public class TalonMotor extends TalonFX implements MotorInterface {
     }
     public StatusSignalData<Current> getCurrentSignal() {
         return currentSignal;
+    }
+  @Override
+  public void showSysidCommands(Subsystem subsystem) {
+        MotorUtils.showSysidCommands(this, config, subsystem);
     }
 
 }

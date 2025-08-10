@@ -12,6 +12,7 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.Demacia.utils.Elastic.UpdateArray;
 import frc.Demacia.utils.Log.LogManager;
 import frc.Demacia.utils.Log.MotorLogEntry;
@@ -192,7 +193,6 @@ public class SparkMotor extends SparkMax implements Sendable, MotorInterface {
     if (p != null) {
       UpdateArray.show(name + " PID " + slot, CloseLoopParam.names, p.toArray(), (double[] array) -> updatePID(true));
     }
-
   }
 
   public double getCurrentPosition() {
@@ -277,6 +277,15 @@ public class SparkMotor extends SparkMax implements Sendable, MotorInterface {
   }
 
   @Override
+  public void setAngle(double angle, double feedForward) {
+    setMotion(MotorUtils.getPositionForAngle(getCurrentPosition(), angle, config.isRadiansMotor), feedForward);
+  }
+  @Override
+  public void setAngle(double angle) {
+    setMotion(MotorUtils.getPositionForAngle(getCurrentPosition(), angle, config.isRadiansMotor));
+  }
+
+  @Override
   public void setEncoderPosition(double position) {
     encoder.setPosition(position);
   }
@@ -293,4 +302,10 @@ public class SparkMotor extends SparkMax implements Sendable, MotorInterface {
           configure(cfg, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
         });
   }
+
+  @Override
+  public void showSysidCommands(Subsystem subsystem) {
+    MotorUtils.showSysidCommands(this, config, subsystem);
+  }
+
 }

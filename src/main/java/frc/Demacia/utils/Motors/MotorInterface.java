@@ -1,6 +1,11 @@
 package frc.Demacia.utils.Motors;
 
+import edu.wpi.first.wpilibj2.command.Subsystem;
+
 public interface MotorInterface {
+
+    String name();
+
     void changeSlot(int slot);    // change the slot used in the motor for PID/FF calculation
     void setNeutralMode(boolean isBrake);
     void setDuty(double power); // power -1 to 1
@@ -9,6 +14,8 @@ public interface MotorInterface {
     void setVelocity(double velocity);
     void setMotion(double position, double feedForward); // position profiled motion in motor with feedForward value calculated in roborio
     void setMotion(double position);
+    void setAngle(double angle, double feedForward); // position profiled motion in motor with feedForward value calculated in roborio
+    void setAngle(double angle);
     void setPositionVoltage(double position, double feedForward);
     void setPositionVoltage(double position);
     void setVelocityWithFeedForward(double velocity);
@@ -28,5 +35,6 @@ public interface MotorInterface {
 
     void showConfigPIDFSlotCommand(int slot);
     void showConfigMotionVelocitiesCommand();
+    void showSysidCommands(Subsystem subsystem);
 
 }
