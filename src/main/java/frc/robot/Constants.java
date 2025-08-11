@@ -24,6 +24,8 @@ public final class Constants {
 
   public static final class DriverConstants {
     public static final int DriverControllerPort = 0;
+    public static final double MaxVelocity = 3.0; // m/s
+    public static final double MaxAngularVelocity = 2 * Math.PI; // rad/s
 
   }
 

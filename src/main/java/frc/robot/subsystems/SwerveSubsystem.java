@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.SwerveModule; // Ensure this import matches the actual package of SwerveModule
@@ -25,6 +26,14 @@ public class SwerveSubsystem extends SubsystemBase {
 
 
 
+  }
+  public void drive(SwerveModuleState state) {
+    // Implement the logic to drive the swerve modules based on vx, vy, and omega
+    // This could involve calculating the desired angles and speeds for each module
+    FL.setState(state);
+    FR.setState( state);
+    BL.setState(state);
+    BR.setState(state);
   }
 
   @Override

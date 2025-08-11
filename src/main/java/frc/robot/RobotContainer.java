@@ -6,6 +6,11 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.SwerveSubsystem;
+
+import com.ctre.phoenix6.swerve.SwerveModule;
+import com.ctre.phoenix6.swerve.jni.SwerveJNI.ModuleState;
+
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -38,14 +43,23 @@ public class RobotContainer {
 
   private void configureBindings() {
     //drive
-    double vx = -controller.getLeftY()*20;
-    System.out.println("Left Y: " + vx);
+    double vx = -controller.getLeftY()*Constants.DriverConstants.MaxVelocity;
     //turn
+    double vy = -controller.getLeftX()*Constants.DriverConstants.MaxVelocity;
     double leftTrigger = -controller.getLeftTriggerAxis();
-    System.out.println("Left Trigger: " + leftTrigger);
     double rightTrigger = controller.getRightTriggerAxis();
+    double radPerSec = (leftTrigger-rightTrigger)*Constants.DriverConstants.MaxAngularVelocity;
+    swerveSubsystem.drive(new ChassisSpeeds(vx, vy, radPerSec));
+    //double robotSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, getRobotAngle);
+    //ModuleState[] states = kinematics.toSwerveModuleStates(robotSpeeds);
+      //for(int i = 0; i < states.length; i++) {
+        //module[i].setState(states[i]);
+      //}
+
+
+
     
-    double radPerSec = (leftTrigger-rightTrigger)*2;
+
     
     
   }
