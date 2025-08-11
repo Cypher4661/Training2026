@@ -100,7 +100,7 @@ public class RandomPowerGenerator {
         return lastPower;
     }
 
-    public static Command getRandomPowerCommand(MotorInterface motor, SlowPowerGenerator generator, Subsystem subsystem) {
+    public static Command getRandomPowerCommand(MotorInterface motor, RandomPowerGenerator generator, Subsystem subsystem) {
         return new RunCommand(()->motor.setVoltage(generator.next()), subsystem);
     }
  

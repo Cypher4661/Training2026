@@ -22,8 +22,6 @@ public class SlowPowerGenerator {
         stepEndTime = 0;
     }
 
-
-
     double time() {
         return Timer.getFPGATimestamp();
     }
