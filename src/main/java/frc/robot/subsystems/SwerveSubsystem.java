@@ -5,10 +5,27 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.SwerveModule; // Ensure this import matches the actual package of SwerveModule
+
 
 public class SwerveSubsystem extends SubsystemBase {
+  private SwerveModule FL;
+  private SwerveModule FR;
+  private SwerveModule BL;
+  private SwerveModule BR;
+
+
   /** Creates a new SwerveSubsystem. */
-  public SwerveSubsystem() {}
+  public SwerveSubsystem() {
+    FL = new SwerveModule(Constants.ModuleConfiger.FL);
+    FR = new SwerveModule(Constants.ModuleConfiger.FR);
+    BL = new SwerveModule(Constants.ModuleConfiger.BL);
+    BR = new SwerveModule(Constants.ModuleConfiger.BR);
+
+
+
+  }
 
   @Override
   public void periodic() {
