@@ -1,111 +1,119 @@
 package frc.robot.subsystems.Swerve;
 
-
 import com.ctre.phoenix6.hardware.CANcoder;
-
-
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-
 import frc.robot.utils.SparkMotor;
 import frc.robot.utils.TalonMotor;
 
 public class SwerveModule {
-    private SparkMotor steerMotor;
-    private TalonMotor driveMotor;
-    private CANcoder cancoder;
+    private final SparkMotor steerMotor;
+    private final TalonMotor driveMotor;
+    private final CANcoder cancoder;
+    private final double absoluteOffset;
     public String name;
 
     public SwerveModule(ModuleConfig configs) {
         steerMotor = new SparkMotor(configs.steerConfig);
         driveMotor = new TalonMotor(configs.driveConfig);
         cancoder = new CANcoder(configs.CANcoderID);
+        absoluteOffset = configs.CANcoderOffset; 
         name = configs.name;
     }
-    public void setDutySteer(double duty) {
+
+
+    public void setSteerDuty(double duty) {
         steerMotor.setDuty(duty);
     }
-    public void setDutyDrive(double duty) {
+
+    public void setDriveDuty(double duty) {
         driveMotor.setDuty(duty);
-    }
-
-    public double getDutySteer() {
-        return steerMotor.getCurrentVoltage();
-    }
-
-    public double getDutyDrive() {
-        return driveMotor.getCurrentVoltage();
-    }
-
-    public void setNeutralMode(boolean isBrake) {
-        driveMotor.setNeutralMode(isBrake);
-        steerMotor.setNeutralMode(isBrake);
     }
 
     public void setSteerPower(double power) {
         steerMotor.set(power);
     }
 
-    public double getAbsoluteAngle() {
-        return cancoder.getAbsolutePosition().getValueAsDouble()*360;
-    }
-
     public void setDrivePower(double power) {
         driveMotor.set(power);
     }
-    
-    public void setSteerVelocity(double velocityRadsPerSecond) {
-        steerMotor.setVelocity(velocityRadsPerSecond);
+
+    public void setSteerVelocity(double velocity) {
+        steerMotor.setVelocity(velocity);
     }
 
-    public void setDriveVelocity(double velocityMetersPerSecond) {
-        driveMotor.setVelocity(velocityMetersPerSecond);
+    public void setDriveVelocity(double velocity) {
+        driveMotor.setVelocity(velocity);
     }
-        public void setSteerPosition(double positionRadians) {
-        steerMotor.setPositionVoltage(positionRadians);
+
+    public void setSteerPosition(double positionDegrees) {
+        steerMotor.setPositionVoltage(positionDegrees);
     }
-    public double getSteerAngle() {
+
+    public void setDriverPosition(double positionMeters) {
+        driveMotor.setPositionVoltage(positionMeters);
+    }
+
+    public double getAbsoluteAngle() {
+        return (cancoder.getAbsolutePosition().getValueAsDouble() * 360.0) - absoluteOffset;
+    }
+
+    public double getSteerPosition() {
         return steerMotor.getCurrentPosition();
     }
-    public Rotation2d getSteerRotation() {
-        return new Rotation2d(getSteerAngle());
+
+    public double getDriverPosition() {
+        return driveMotor.getCurrentPosition();
     }
-    public double getSteerVel() {
+
+    public Rotation2d getSteerRotation() {
+        return Rotation2d.fromDegrees(getSteerPosition());
+    }
+
+    public double getSteerVelocity() {
         return steerMotor.getCurrentVelocity();
     }
-    public double getDriveVel() {
+
+    public double getDriveVelocity() {
         return driveMotor.getCurrentVelocity();
     }
 
-    
     public SwerveModulePosition getModulePosition() {
-        return new SwerveModulePosition(driveMotor.getCurrentPosition(),
-        Rotation2d.fromRadians(steerMotor.getCurrentPosition()));
+        return new SwerveModulePosition(
+            getDriverPosition(),
+            getSteerRotation()
+        );
     }
 
     public SwerveModuleState getState() {
-        return new SwerveModuleState(getDriveVel(), getSteerRotation());
+        return new SwerveModuleState(getDriveVelocity(), getSteerRotation());
     }
 
-    public void(SwerveModuleState state) {
-            setSteerPosition(state.angle.getDegrees());
-            setDriveVelocity(state.speedMetersPerSecond);
+    public void setDesiredState(SwerveModuleState desiredState) {
+        SwerveModuleState optimized = optimize(desiredState, getSteerPosition());
+        setSteerPosition(optimized.angle.getDegrees());
+        setDriveVelocity(optimized.speedMetersPerSecond);
     }
- 
+
     public void stop() {
         steerMotor.stopMotor();
         driveMotor.stopMotor();
     }
-    private SwerveModuleState optimize(SwerveModuleState state, double angle) {
-        var delta = state.angle.getDegrees() - angle;
+
+    public void resetToAbsolute() {
+        double absAngle = getAbsoluteAngle();
+        steerMotor.setPositionVoltage(absAngle);
+    }
+
+    private SwerveModuleState optimize(SwerveModuleState state, double currentAngleDegrees) {
+        double delta = state.angle.getDegrees() - currentAngleDegrees;
         if (Math.abs(delta) > 90) {
             return new SwerveModuleState(
-                -state.speedMetersPerSecond, state.angle.rotateBy(Rotation2d.kPi));
+                -state.speedMetersPerSecond,
+                state.angle.rotateBy(Rotation2d.fromDegrees(180))
+            );
         }
-        else{
-            return new SwerveModuleState()(state.speedMetersPerSecond, state.angle);
-        }
+        return state;
     }
 }
