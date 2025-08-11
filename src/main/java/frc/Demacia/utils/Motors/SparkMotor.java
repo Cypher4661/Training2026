@@ -52,13 +52,14 @@ public class SparkMotor extends SparkMax implements Sendable, MotorInterface {
     cfg.inverted(config.inverted);
     cfg.idleMode(config.brake ? SparkBaseConfig.IdleMode.kBrake : SparkBaseConfig.IdleMode.kCoast);
     cfg.voltageCompensation(config.maxVolt);
-    cfg.encoder.positionConversionFactor(config.motorRatio);
-    cfg.encoder.velocityConversionFactor(config.motorRatio / 60);
+    cfg.encoder.positionConversionFactor(1/config.motorRatio);
+    cfg.encoder.velocityConversionFactor(1/config.motorRatio / 60);
     updatePID(false);
     if (config.maxVelocity != 0) {
       cfg.closedLoop.maxMotion.maxVelocity(config.maxVelocity).maxAcceleration(config.maxAcceleration);
     }
     getEncoder();
+    getClosedLoopController();
     this.configure(cfg, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
   }
 
@@ -243,8 +244,8 @@ public class SparkMotor extends SparkMax implements Sendable, MotorInterface {
    */
   @Override
   public void initSendable(SendableBuilder builder) {
-    builder.setSmartDashboardType("Spark Motor");
-    builder.addStringProperty("ControlMode", this::getCurrentControlMode, null);
+ //   builder.setSmartDashboardType("Spark Motor");
+//    builder.addStringProperty("ControlMode", this::getCurrentControlMode, null);
     builder.addDoubleProperty("Position", this::getCurrentPosition, null);
     builder.addDoubleProperty("Velocity", this::getCurrentVelocity, null);
     builder.addDoubleProperty("Voltage", this::getCurrentVoltage, null);

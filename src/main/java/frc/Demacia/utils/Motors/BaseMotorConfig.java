@@ -1,5 +1,7 @@
 package frc.Demacia.utils.Motors;
 
+import org.opencv.core.MatOfFloat;
+
 import com.ctre.phoenix6.CANBus;
 
 /**
@@ -129,7 +131,7 @@ public abstract class BaseMotorConfig<T extends BaseMotorConfig<T>> {
      */
     @SuppressWarnings("unchecked")
     public T withRadiansMotor(double gearRatio) {
-        this.motorRatio = gearRatio / (Math.PI * 2);
+        this.motorRatio = gearRatio / 2*Math.PI;
         isMeterMotor = false;
         isRadiansMotor = true;
         isDegreesMotor = false;

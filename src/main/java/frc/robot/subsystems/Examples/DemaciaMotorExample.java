@@ -4,6 +4,8 @@ package frc.robot.subsystems.Examples;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.Demacia.utils.Motors.BaseMotorConfig.Canbus;
 import frc.Demacia.utils.Motors.MotorInterface;
+import frc.Demacia.utils.Motors.SparkConfig;
+import frc.Demacia.utils.Motors.SparkMotor;
 import frc.Demacia.utils.Motors.TalonConfig;
 import frc.Demacia.utils.Motors.TalonMotor;
 
@@ -57,11 +59,11 @@ import frc.Demacia.utils.Motors.TalonMotor;
 public class DemaciaMotorExample extends SubsystemBase {
 
   public static class Example { // Should be in Constants file
-    public static final TalonConfig MOTOR_CONFIG = new TalonConfig(11, Canbus.Rio, "TalonExample")
-      .withBrake(true)
+    public static final SparkConfig MOTOR_CONFIG = new SparkConfig(11, "TalonExample")
+      .withBrake(false)
       .withCurrent(20) // Maximum current in Apmpers
       .withInvert(true)
-      .withDegreesMotor(12.8) // the motor gear ratio - all data in degrees
+      .withDegreesMotor(9.0) // the motor gear ratio - all data in degrees
       .withMotionParam(1500, 4000, 5000) // set the motion parametrs
       .withPID(0.01, 0, 0, 0.13, 0.0045,0.0005, 0) // the PID/FF gains
       .withRampTime(0.2) // time from 0 to full power
@@ -74,7 +76,7 @@ public class DemaciaMotorExample extends SubsystemBase {
     // Constructor
     public DemaciaMotorExample() {
         super();
-        motor = new TalonMotor(Example.MOTOR_CONFIG);
+        motor = new SparkMotor(Example.MOTOR_CONFIG);
         motor.showSysidCommands(this);
     }
 }   
