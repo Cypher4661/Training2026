@@ -22,7 +22,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
  
   private final FirstSubsystems subsystems ;
-  private final SwerveModule  Modola;
   // private Command autoCommand = new FirstCommand(subsystems, 0.5, 10);
   private Command autogotCommand;
   // The robot's subsystems and commands are defined here...
@@ -30,13 +29,13 @@ public class RobotContainer {
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
  // private final CommandXboxController m_driverController =
-  //    new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  // new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     subsystems = new FirstSubsystems();
     autogotCommand = new goToPosition(90, subsystems);
-    Modola = new SwerveModule(Configs);
+
     // Configure the trigger bindings
    // configureBindings();
   }

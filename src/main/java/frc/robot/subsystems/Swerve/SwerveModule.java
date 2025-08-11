@@ -12,6 +12,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.Sendable;
@@ -24,6 +25,7 @@ import frc.robot.utils.SparkMotor;
 import frc.robot.utils.TalonMotor;
 
 public class SwerveModule implements Sendable {
+    public static final Translation2d Positin = null;
     private final int ModuleID;
     private final SparkMotor SteerMotor;
     private final TalonMotor DriveMotor;
@@ -39,9 +41,13 @@ public class SwerveModule implements Sendable {
         ModuleID = config.ModuleID;
         SteerMotor = new SparkMotor(config.SteerConfig);
         DriveMotor = new TalonMotor(config.DriveConfig);
-        eNcoder = new CANcoder(Constants.ModuleConstants.CANcoderID);
+        eNcoder = new CANcoder(Constants.ChassisConstants.CANcoderID);
         calibrateSteer();
         SmartDashboard.putData("Modil"+ModuleID, this);
+    }
+
+    public SwerveModuleState getState() {
+        return new SwerveModuleState(getDriveVelocity(), getSteerRotation());
     }
 
     public void setIdleMode(boolean isBrake) {
@@ -50,8 +56,8 @@ public class SwerveModule implements Sendable {
     }
 
     private void calibrateSteer() {
-        double angle = getCANcoderAbseloteAngle() - Constants.ModuleConstants.CancoderOffset;
-        SteerMotor.getEncoder().setPosition(angle / 360 * Constants.ModuleConstants.GearRatiosteer);
+        double angle = getCANcoderAbseloteAngle() - Constants.ChassisConstants.CancoderOffset;
+        SteerMotor.getEncoder().setPosition(angle / 360 * Constants.ChassisConstants.GearRatiosteer);
     }
 
     public void setSteerPower(double powersteer) {
@@ -135,7 +141,7 @@ public class SwerveModule implements Sendable {
         return new SwerveModulePosition(getDrivePosition(), Rotation2d.fromRadians(getSteerPosition()));
     }
 
-    public SwerveModuleState getState() {
+    public SwerveModuleState moduleState() {
         return new SwerveModuleState(getDriveVelocity(), getSteerRotation());
     }
 
@@ -148,6 +154,5 @@ public class SwerveModule implements Sendable {
         builder.addDoubleProperty("Steer Power", this::getPowerSteer, null);
         builder.addDoubleProperty("Drive Drive", this::getPowerDrive, null);
         builder.addDoubleProperty("Position CAN", this::getCANcoderAbseloteAngle, null);
-
     }
 }
