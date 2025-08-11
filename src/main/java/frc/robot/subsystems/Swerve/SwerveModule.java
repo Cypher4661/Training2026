@@ -7,6 +7,7 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.Demacia.utils.Motors.MotorInterface;
+import frc.Demacia.utils.Motors.SparkMotor;
 import frc.Demacia.utils.Motors.TalonMotor;
 import frc.Demacia.utils.Sensors.Cancoder;
 
@@ -21,7 +22,7 @@ public class SwerveModule implements Sendable {
 
     SwerveModule(Constants.ModuleConfig config) {
         this.config = config;
-        steer = new TalonMotor(config.steerConfig);
+        steer = new SparkMotor(config.steerConfig);
         drive = new TalonMotor(config.driveConfig);
         absEncoder = new Cancoder(config.cancoderConfig);
         setSteerOffset();
@@ -30,7 +31,7 @@ public class SwerveModule implements Sendable {
     }
 
     public void setSteerOffset() {
-        steer.setEncoderPosition(getAbsEncoder()-config.cancoderOffset);
+        steer.setEncoderPosition(getAbsEncoder()-config.cancoderOffset);        
     }
 
     public double getAbsEncoder() {
