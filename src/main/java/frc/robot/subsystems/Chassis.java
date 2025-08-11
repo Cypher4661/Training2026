@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -49,7 +50,8 @@ public class Chassis extends SubsystemBase {
           new Translation2d(-0,0),
           new Translation2d(-0,-0)
         });
-    
+poseEstimator = new SwerveDrivePoseEstimator(kinematicsFix, new Rotation2d(), getModulePosition(), new Pose2d());
+  
     SmartDashboard.putData("Gyro", gyro);
     Field2d field = new Field2d();
     SmartDashboard.putData("Field", field);
@@ -59,12 +61,12 @@ public class Chassis extends SubsystemBase {
   public SwerveModuleState[] getModuleStates() {
     return kinematicsFix.toSwerveModuleStates(getChassisSpeedsFieldRel());
   } 
-public SwerveModuleState[] getModulePosition() {
-    return new SwerveModuleState[]{
-      FL.getState(),
-      FR.getState(),
-      BR.getState(),
-      BL.getState()
+public SwerveModulePosition[] getModulePosition() {
+    return new SwerveModulePosition[]{
+      new SwerveModulePosition(FL.getDrivePosition(), FL.getState().angle),
+      new SwerveModulePosition(FR.getDrivePosition(), FR.getState().angle),
+      new SwerveModulePosition(BL.getDrivePosition(), BL.getState().angle),
+      new SwerveModulePosition(BR.getDrivePosition(), BR.getState().angle)
     };
   }
 
@@ -89,6 +91,14 @@ public SwerveModuleState[] getModulePosition() {
     BR.stop();
   }
 
+  public void setModuleStates(SwerveModuleState[] states) {
+    SwerveDriveKinematics.desaturateWheelSpeeds(states, 3.0);
+    FL.setState(states[0]);
+    FR.setState(states[1]);
+    BR.setState(states[2]);
+    BL.setState(states[3]);
+  }
+
   public void setIdleMode(boolean isBrake) {
     for (SwerveModule module : Modules) {
       module.setIdleMode(isBrake);
@@ -103,34 +113,29 @@ public SwerveModuleState[] getModulePosition() {
     return poseEstimator.getEstimatedPosition();
   }
 
-  // public Translation2d calculateVelocity(double wantedVX, double wantedVY, double currentVX, double currentVY){
-
-    
-  //   double deltaVX = wantedVX - currentVX;
-  //   double deltaVY = wantedVY - currentVY;
-
-  //   double distance = Math.sqrt(deltaVX * deltaVX + deltaVY * deltaVY);
-  //   double maxSpeed = 3.0; // Maximum speed in m/s
-
-  //   if (distance > maxSpeed) {
-  //     double scaleFactor = maxSpeed / distance;
-  //     deltaVX *= scaleFactor;
-  //     deltaVY *= scaleFactor;
-  //   }
-
-  //   return new Translation2d(currentVX + deltaVX, currentVY + deltaVY);
-  // }
-
+  double MAX_LINEAR_ACCELERATION = 7; 
 
   public Translation2d calculateVelocityWithAccel(double wantedVx, double wantedVy){
     ChassisSpeeds currentSpeeds = getChassisSpeedsFieldRel();
+    double currentVx = currentSpeeds.vxMetersPerSecond;
+    double currentVy = currentSpeeds.vyMetersPerSecond;
+
+    double xAccel = (wantedVx - currentVx) / 0.02;
+    double yAccel = (wantedVy - currentVy) / 0.02;
+
+    if (Math.abs(xAccel) > MAX_LINEAR_ACCELERATION) {
+      xAccel = Math.signum(xAccel) * MAX_LINEAR_ACCELERATION;
+    }
+    if (Math.abs(yAccel) > MAX_LINEAR_ACCELERATION) {
+      yAccel = Math.signum(yAccel) * MAX_LINEAR_ACCELERATION;
+    }
     
-
-
+    return new Translation2d(currentVx + xAccel * 0.02, currentVy + yAccel * 0.02);
   }
+
   public void setVelocityWithAccel(ChassisSpeeds wantedSpeeds){
     ChassisSpeeds currentSpeeds = getChassisSpeedsFieldRel();
-    Translation2d limitedVelocitiesVector = calculateVelocity(wantedSpeeds.vxMetersPerSecond, wantedSpeeds.vyMetersPerSecond, currentSpeeds.vxMetersPerSecond, currentSpeeds.vyMetersPerSecond);
+    Translation2d limitedVelocitiesVector = calculateVelocityWithAccel(wantedSpeeds.vxMetersPerSecond, wantedSpeeds.vyMetersPerSecond);
     ChassisSpeeds limitedVelocities = new ChassisSpeeds(limitedVelocitiesVector.getX(), limitedVelocitiesVector.getY(), wantedSpeeds.omegaRadiansPerSecond);
     Translation2d lastWantedSpeeds = limitedVelocitiesVector;
     setVelocities(limitedVelocities);
@@ -148,6 +153,5 @@ public SwerveModuleState[] getModulePosition() {
   @Override
   public void periodic() {
     Rotation2d gyroAngle = getGyroAngle();
-    poseEstimator = new SwerveDrivePoseEstimator(kinematicsFix, getGyroAngle(), getModulePosition(), new Pose2d(null, null, null));
-  }
+    }
 }
