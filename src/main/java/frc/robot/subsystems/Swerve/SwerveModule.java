@@ -1,158 +1,92 @@
 package frc.robot.subsystems.Swerve;
 
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.config.SparkMaxConfig;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-import com.ctre.phoenix6.hardware.CANcoder;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
-
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
-import frc.robot.utils.SparkConfig;
-import frc.robot.utils.SparkMotor;
-import frc.robot.utils.TalonMotor;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.Demacia.utils.Motors.MotorInterface;
+import frc.Demacia.utils.Motors.SparkMotor;
+import frc.Demacia.utils.Motors.TalonMotor;
+import frc.Demacia.utils.Sensors.Cancoder;
 
 public class SwerveModule implements Sendable {
-    public static final Translation2d Positin = null;
-    private final int ModuleID;
-    private final SparkMotor SteerMotor;
-    private final TalonMotor DriveMotor;
-    private final CANcoder eNcoder;
-    private final SimpleMotorFeedforward SteerFF = new SimpleMotorFeedforward(0.0075, 0.000625);
-    private final PIDController SteerPID = new PIDController(0.001, 0, 0);
-    private final SimpleMotorFeedforward DriveFF = new SimpleMotorFeedforward(1.0 / 150.0, 2.0 / 9.0);
-    private final PIDController DrivePID = new PIDController(0.001, 0, 0);
-    SparkMaxConfig cfgSteer;
-    SparkMaxConfig cfgDrive;
+    private MotorInterface steer;
+    private MotorInterface drive;
+    private Cancoder absEncoder;
+    protected Constants.ModuleConfig config;
+    protected SwerveModuleState state = new SwerveModuleState();
+    protected SwerveModulePosition position = new SwerveModulePosition();
 
-    public SwerveModule(ModuleConfig config) {
-        ModuleID = config.ModuleID;
-        SteerMotor = new SparkMotor(config.SteerConfig);
-        DriveMotor = new TalonMotor(config.DriveConfig);
-        eNcoder = new CANcoder(Constants.ChassisConstants.CANcoderID);
-        calibrateSteer();
-        SmartDashboard.putData("Modil"+ModuleID, this);
+
+    SwerveModule(Constants.ModuleConfig config) {
+        this.config = config;
+        steer = new SparkMotor(config.steerConfig);
+        drive = new TalonMotor(config.driveConfig);
+        absEncoder = new Cancoder(config.cancoderConfig);
+        setSteerOffset();
+        refresh();
+        SmartDashboard.putData(config.name, this);
     }
 
-    public SwerveModuleState getState() {
-        return new SwerveModuleState(getDriveVelocity(), getSteerRotation());
+    public void setSteerOffset() {
+        steer.setEncoderPosition(getAbsEncoder()-config.cancoderOffset);        
     }
 
-    public void setIdleMode(boolean isBrake) {
-        SteerMotor.setNeutralMode(isBrake);
-        DriveMotor.setNeutralMode(isBrake);
+    public double getAbsEncoder() {
+        return absEncoder.getCurrentAbsPosition();
     }
 
-    private void calibrateSteer() {
-        double angle = getCANcoderAbseloteAngle() - Constants.ChassisConstants.CancoderOffset;
-        SteerMotor.getEncoder().setPosition(angle / 360 * Constants.ChassisConstants.GearRatiosteer);
-    }
-
-    public void setSteerPower(double powersteer) {
-        SteerMotor.set(powersteer);
-    }
-
-    public void setDrivePower(double powerdrive) {
-        DriveMotor.set(powerdrive);
-    }
-
-    public double getPowerSteer() {
-        return SteerMotor.getAppliedOutput();
-    }
-
-    public double getPowerDrive() {
-        return DriveMotor.get();
-    }
-
-    public void stop() {
-        SteerMotor.stopMotor();
-        DriveMotor.stopMotor();
-    }
-
-    public double getSteerPosition() {
-        double angle = SteerMotor.getCurrentPosition();
-        return MathUtil.inputModulus(angle, -180, 180);
-    }
-
-    public double getDrivePosition() {
-        double position = DriveMotor.getCurrentPosition();
-        return MathUtil.inputModulus(position, -180, 180);
-    }
-
-    public double getSteerVelocity() {
-        return SteerMotor.getCurrentVelocity();
-    }
-
-    public double getDriveVelocity() {
-        return DriveMotor.getCurrentVelocity();
-
-    }
-
-    public double getCANcoderAbseloteAngle() {
-        return eNcoder.getAbsolutePosition().getValueAsDouble() * 360;
-    }
-
-    public void setSteerVelocity(double velocity) {
-        SteerMotor.setVelocity(velocity);
-        setSteerPower(SteerFF.calculate(velocity) + SteerPID.calculate(velocity));
-    }
-
-    public void setDriveVelocity(double velocity) {
-        setDrivePower(DriveFF.calculate(velocity) + DrivePID.calculate(velocity));
-    }
-
-    public void setSteerPosition(double positionDegrees) {
-        SteerMotor.setPositionVoltage(positionDegrees);
-    }
-
-    public Rotation2d getSteerRotation() {
-        return new Rotation2d(getSteerPosition());
+    public void refresh() {
+        state.angle.setDegrees(steer.getCurrentPosition());
+        state.speedMetersPerSecond = drive.getCurrentVelocity();
+        position.angle.set(state.angle.getRadians());
+        position.distanceMeters = drive.getCurrentPosition() + steer.getCurrentPosition() * Constants.STEER_TO_DISTANCE_RATIO;
     }
 
     public void setState(SwerveModuleState state) {
-        double wantedAngle = state.angle.getDegrees();
-        double diff = wantedAngle - getSteerPosition();
-        double vel = state.speedMetersPerSecond;
-        diff = MathUtil.angleModulus(diff);
-        if (diff > 0.5 * Math.PI) {
-            vel = -vel;
-            diff = diff - Math.PI;
-        } else if (diff < -0.5 * Math.PI) {
-            vel = -vel;
-            diff = diff + Math.PI;
-        }
-        setSteerPosition(getSteerPosition() + diff);
-        setDriveVelocity(vel);
+        state.optimize(this.state.angle);
+        steer.setAngle(state.angle.getDegrees());
+        drive.setVelocity(state.speedMetersPerSecond);
     }
 
-    public SwerveModulePosition getModulePosition() {
-        return new SwerveModulePosition(getDrivePosition(), Rotation2d.fromRadians(getSteerPosition()));
+    public void setSteerPower(double power) {
+        steer.setDuty(power);
+    }
+    public void setDrivePower(double power) {
+        drive.setDuty(power);
+    }
+    public void setSteerAngle(double angle) {
+        steer.setAngle(angle);
+    }
+    public void setDriveVelocity(double velocity) {
+        drive.setVelocity(velocity);
     }
 
-    public SwerveModuleState moduleState() {
-        return new SwerveModuleState(getDriveVelocity(), getSteerRotation());
+    public void showSysidCommads(Subsystem subsystem) {
+        steer.showSysidCommands(subsystem);
+        drive.showSysidCommands(subsystem);
+    }
+
+    protected MotorInterface steerMotor() {
+        return steer;
+    }
+    protected MotorInterface driveMotor() {
+        return drive;
+    }
+
+    public void setBrake() {
+        steer.setNeutralMode(true);
+        drive.setNeutralMode(true);
+    }
+    public void setCoast() {
+        steer.setNeutralMode(false);
+        drive.setNeutralMode(false);
     }
 
     @Override
     public void initSendable(SendableBuilder builder) {
-        builder.addDoubleProperty("Steer Position", this::getSteerPosition, null);
-        builder.addDoubleProperty("Drive Position", this::getDrivePosition, null);
-        builder.addDoubleProperty("Steer Velocity", this::getSteerVelocity, null);
-        builder.addDoubleProperty("Drive Velocity", this::getDriveVelocity, null);
-        builder.addDoubleProperty("Steer Power", this::getPowerSteer, null);
-        builder.addDoubleProperty("Drive Drive", this::getPowerDrive, null);
-        builder.addDoubleProperty("Position CAN", this::getCANcoderAbseloteAngle, null);
+        builder.addDoubleProperty("AbsEncoder",this::getAbsEncoder, null);
     }
 }

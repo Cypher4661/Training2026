@@ -9,51 +9,33 @@ import frc.robot.commands.goToPosition;
 import frc.robot.subsystems.FirstSubsystems;
 import frc.robot.subsystems.Swerve.SwerveModule;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Subsystem;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.Examples.DemaciaMotorExample;
 
-/**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and trigger mappings) should be declared here.
- */
 public class RobotContainer {
- 
-  private final FirstSubsystems subsystems ;
-  // private Command autoCommand = new FirstCommand(subsystems, 0.5, 10);
-  private Command autogotCommand;
-  // The robot's subsystems and commands are defined here...
- 
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
- // private final CommandXboxController m_driverController =
-  // new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  public static Robot robot;
+  public static int N_CYCLE = 0;
+  public static double CYCLE_TIME = 0.02;
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
-    subsystems = new FirstSubsystems();
-    autogotCommand = new goToPosition(90, subsystems);
+  public DemaciaMotorExample demaciaMotorExample = new DemaciaMotorExample();
 
-    // Configure the trigger bindings
-   // configureBindings();
+  public RobotContainer(Robot robot) {
+    RobotContainer.robot = robot;
+    RobotContainer.CYCLE_TIME = robot.getPeriod();
+    configureBindings();
+  }
+  
+   private void configureBindings() {
   }
 
-  private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    
-
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+  public static boolean isEnabled() {
+    return robot.isEnabled();
   }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
+  public void periodic() {
+    N_CYCLE++;
+  }
+
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return autogotCommand;
