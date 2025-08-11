@@ -15,14 +15,18 @@ public class SwerveSubsystem extends SubsystemBase {
   private SwerveModule FR;
   private SwerveModule BL;
   private SwerveModule BR;
+  private SwerveModule[] modules;
 
 
   /** Creates a new SwerveSubsystem. */
   public SwerveSubsystem() {
-    FL = new SwerveModule(Constants.ModuleConfiger.FL);
-    FR = new SwerveModule(Constants.ModuleConfiger.FR);
-    BL = new SwerveModule(Constants.ModuleConfiger.BL);
-    BR = new SwerveModule(Constants.ModuleConfiger.BR);
+    modules = new SwerveModule[]{
+      new SwerveModule(Constants.ModuleConfiger.FL),
+      new SwerveModule(Constants.ModuleConfiger.FR),
+      new SwerveModule(Constants.ModuleConfiger.BL),
+      new SwerveModule(Constants.ModuleConfiger.BR)
+    };
+
 
 
 
