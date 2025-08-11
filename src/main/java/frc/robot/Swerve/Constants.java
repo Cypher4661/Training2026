@@ -1,4 +1,4 @@
-package frc.robot.Drive;
+package frc.robot.Swerve;
 
 import com.ctre.phoenix6.CANBus;
 
@@ -26,14 +26,9 @@ public class Constants {
     public static final double MAX_SPEED = 3.7;
     public static final double MAX_OMEGA = 6; // Radians per second
     public static final double MAX_X_ACCELERATION = 7;
-    public static final double MAX_X_VELOCITY_CHANGE = MAX_X_ACCELERATION * CYCLE_TIME;
     public static final double MAX_Y_ACCELERATION = 5;
-    public static final double MAX_Y_VELOCITY_CHANGE = MAX_Y_ACCELERATION * CYCLE_TIME;
 
     public static final double STEER_TO_DISTANCE_RATIO = 0.14/360.0; // 14 cm for 1 steer rotation
-
-    public static double MAX_SET_STATE_STEER_ADDITION = 5.0;
-    public static double STATE_STEER_ADDITION = 1.7;
 
     public static boolean CANCODER_INVERTED = false;
 

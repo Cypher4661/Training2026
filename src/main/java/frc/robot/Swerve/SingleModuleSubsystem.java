@@ -1,4 +1,4 @@
-package frc.robot.Drive;
+package frc.robot.Swerve;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -24,8 +24,7 @@ public class SingleModuleSubsystem extends SubsystemBase {
             modulePositionOnRobot[i] = modules[i].config.positionRelativeToRobotCenter;
             moduleState[i] = modules[i].state;
             modulePositions[i] = modules[i].position;
-            modules[i].showConfigPID();
-            modules[i].showBaseCommands(this);
+            modules[i].showSysidCommads(this);
         }
         SmartDashboard.putData("SingleModule", this);
     }
@@ -34,8 +33,7 @@ public class SingleModuleSubsystem extends SubsystemBase {
     public void periodic() {
         super.periodic();
         for(SwerveModule m : modules) {
-            m.refreshPosition();
-            m.refreshState();
+            m.refresh();
         }
     }
 

@@ -1,4 +1,4 @@
-package frc.robot.Drive;
+package frc.robot.Swerve;
 
 
 import static edu.wpi.first.units.Units.Radians;
@@ -6,6 +6,7 @@ import static edu.wpi.first.units.Units.Radians;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.hardware.Pigeon2;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -25,9 +26,10 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.Demacia.utils.DriverUtils;
 import frc.Demacia.utils.Motors.MotorCommands;
 import frc.Demacia.utils.Motors.MotorInterface;
+import frc.robot.RobotContainer;
 import frc.Demacia.utils.DriverUtils.JoystickSide;
 
-public class DriveSubsystem extends SubsystemBase {
+public class SwerveSubsystem extends SubsystemBase {
 
     SwerveModule[] modules;
     SwerveDrivePoseEstimator poseEstimator;
@@ -45,7 +47,7 @@ public class DriveSubsystem extends SubsystemBase {
     ChassisSpeeds targetChassisSpeeds = new ChassisSpeeds();
     Rotation2d gyroRotation = new Rotation2d();
 
-    public DriveSubsystem(CommandXboxController controller) {
+    public SwerveSubsystem(CommandXboxController controller) {
         super();
         this.controller = controller;
         modules = new SwerveModule[Constants.CONFIGS.length];
@@ -83,7 +85,7 @@ public class DriveSubsystem extends SubsystemBase {
         MotorCommands.showRandomPowerCommand("Drives Random Power", -0.9, 0.9, 0.2, this, driveMotors);
         MotorCommands.showSlowPowerCommand("Steers Slow Power", 0.05, 0.01, 1, this, steerMotors);
         MotorCommands.showSlowPowerCommand("Drives Slow Power", 0.03, 0.01, 1, this, driveMotors);
-        MotorCommands.showMotionCommand("Set Steer Angle",this, steerMotors);
+        MotorCommands.showAngleCommand("Set Steer Angle",this, steerMotors);
         MotorCommands.showVelocityCommand("Set Drive Velocity",this, driveMotors);
 
     }
@@ -133,19 +135,19 @@ public class DriveSubsystem extends SubsystemBase {
 
     private void limitSpeeds(ChassisSpeeds speeds) {
         // limit robot relative speeds to account for MAX accelration
-        if(Math.abs(speeds.vxMetersPerSecond) > 0.1) {
-            double currentX = currentChassisSpeeds.vxMetersPerSecond;
-            double newX = Math.min(Math.max(speeds.vxMetersPerSecond, currentX-Constants.MAX_X_VELOCITY_CHANGE),currentX+Constants.MAX_X_VELOCITY_CHANGE);
-            double ratio = Math.abs(newX / speeds.vxMetersPerSecond);
-            speeds.vxMetersPerSecond *= ratio;
-            speeds.vyMetersPerSecond *= ratio;
-        } 
-        if(Math.abs(speeds.vyMetersPerSecond)  > 0.1) {
-            double currentY = currentChassisSpeeds.vyMetersPerSecond;
-            double newY = Math.min(Math.max(speeds.vyMetersPerSecond, currentY-Constants.MAX_Y_VELOCITY_CHANGE),currentY+Constants.MAX_Y_VELOCITY_CHANGE);
-            double ratio = Math.abs(newY / speeds.vxMetersPerSecond);
-            speeds.vxMetersPerSecond *= ratio;
-            speeds.vyMetersPerSecond *= ratio;
+        double currentX = currentChassisSpeeds.vxMetersPerSecond;
+        double currentY = currentChassisSpeeds.vyMetersPerSecond;
+        double deltaX = Constants.MAX_X_ACCELERATION * RobotContainer.CYCLE_TIME;
+        double deltaY = Constants.MAX_Y_ACCELERATION * RobotContainer.CYCLE_TIME;
+        double xClamped = MathUtil.clamp(speeds.vxMetersPerSecond, currentX - deltaX, currentX + deltaX);
+        if(xClamped != speeds.vxMetersPerSecond) {
+            speeds.vyMetersPerSecond *= xClamped / speeds.vxMetersPerSecond;
+            speeds.vxMetersPerSecond = xClamped;
+        }
+        double yClamped = MathUtil.clamp(speeds.vyMetersPerSecond, currentY - deltaY, currentY + deltaY);
+        if(yClamped != speeds.vyMetersPerSecond) {
+            speeds.vxMetersPerSecond *= yClamped / speeds.vyMetersPerSecond;
+            speeds.vyMetersPerSecond = yClamped;
         }
     }
 
@@ -153,14 +155,12 @@ public class DriveSubsystem extends SubsystemBase {
     public void periodic() {
         super.periodic();
         for(SwerveModule m : modules) {
-            m.refreshPosition();
-            m.refreshState();
+            m.refresh();
         }
         currentChassisSpeeds = kinematics.toChassisSpeeds(moduleStates);
         poseEstimator.update(getGyroRotation(), modulePositions);
         pose = poseEstimator.getEstimatedPosition();
         robotField.setRobotPose(pose);
-
     }
 
     @Override
