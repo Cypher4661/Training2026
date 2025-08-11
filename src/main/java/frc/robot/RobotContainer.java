@@ -20,13 +20,13 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here... 
   private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
   
-  private CommandXboxController controller = new CommandXboxController(Constants.OperatorConstants.kDriverControllerPort);
+  private CommandXboxController controller = new CommandXboxController(Constants.DriverConstants.DriverControllerPort);
   
     
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+
+
 
 
   public RobotContainer() {
@@ -37,7 +37,17 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-
+    //drive
+    double vx = -controller.getLeftY()*20;
+    System.out.println("Left Y: " + vx);
+    //turn
+    double leftTrigger = -controller.getLeftTriggerAxis();
+    System.out.println("Left Trigger: " + leftTrigger);
+    double rightTrigger = controller.getRightTriggerAxis();
+    
+    double radPerSec = (leftTrigger-rightTrigger)*2;
+    
+    
   }
 
   /**
