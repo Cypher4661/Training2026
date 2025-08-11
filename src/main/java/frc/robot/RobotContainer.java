@@ -4,8 +4,8 @@
 
 package frc.robot;
 
-import frc.robot.subsystems.DemaciaMotorExample;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.Examples.DemaciaMotorExample;
 
 public class RobotContainer {
 

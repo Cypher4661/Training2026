@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.Examples;
 
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.sim.SparkMaxSim;
