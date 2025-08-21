@@ -116,6 +116,9 @@ public class SwerveSubsystem extends SubsystemBase {
         setSpeeds(targetChassisSpeeds);
     }
 
+    public void updateVisionPosition(Pose2d pose, double time) {
+        poseEstimator.addVisionMeasurement(pose, time);
+    }
     /*
      * Set the current heading as the filed 0 heading - direction to Red 
      */
