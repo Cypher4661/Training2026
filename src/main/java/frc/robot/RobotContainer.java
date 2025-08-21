@@ -5,13 +5,19 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Examples.DemaciaMotorExample;
+import frc.robot.subsystems.Swerve.SwerveSubsystem;
 
 public class RobotContainer {
 
   public static Robot robot;
   public static int N_CYCLE = 0;
   public static double CYCLE_TIME = 0.02;
+
+  CommandXboxController driverControler = new CommandXboxController(0);
+
+  SwerveSubsystem swerve = new SwerveSubsystem(driverControler);
 
   public DemaciaMotorExample demaciaMotorExample = new DemaciaMotorExample();
 
